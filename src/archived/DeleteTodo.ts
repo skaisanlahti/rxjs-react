@@ -1,5 +1,5 @@
 import { Todo } from "../shared/models/Todo";
-import { DataSubject } from "../shared/utils/data-fetching";
+import { DataSubject } from "../shared/utils/DataSubject";
 
 interface Dependencies {
   todos: DataSubject<Todo[]>;

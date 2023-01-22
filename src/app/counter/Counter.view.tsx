@@ -1,6 +1,7 @@
-import { useStream } from "../../shared/hooks/useObservableState";
-import { Button, Container, Title } from "../1App.styles";
-s;
+import { useStream } from "../../shared/hooks/observable-hooks";
+import { useApp } from "../App.context";
+import { Button, Container, Title } from "../App.styles";
+
 export default function Counter() {
   const app = useApp();
   const count = useStream(app.counter.count, (s) => s.value);

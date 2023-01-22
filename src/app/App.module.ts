@@ -1,5 +1,10 @@
-import CounterTodosHandler from "../shared/handlers/CountTodos.handler";
+import ApiModule from "../shared/1api.mock";
+import CountTodosHandler from "../shared/handlers/CountTodos.handler";
 import { startAll } from "../shared/utils/startAll";
+import CounterHandler from "./counter/Counter.handler";
+import CounterModule from "./counter/Counter.module";
+import RouterHandler from "./router/Router.handler";
+import RouterModule from "./router/Router.module";
 import TodoHandler from "./todos/Todos.handler";
 import TodoModule from "./todos/Todos.module";
 
@@ -13,7 +18,7 @@ export default function AppModule() {
     RouterHandler({ router }),
     CounterHandler({ counter }),
     TodoHandler({ todos }),
-    CounterTodosHandler({ counter, todos }),
+    CountTodosHandler({ counter, todos }),
   ]);
 
   return {

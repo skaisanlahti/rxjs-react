@@ -2,6 +2,7 @@ import { map, merge, takeUntil, tap, withLatestFrom } from "rxjs";
 import controller from "../../shared/utils/controller";
 import { loadFromStorage, saveToStorage } from "../../shared/utils/storage";
 import { Count, decrement, increment, setCount } from "./Counter.core";
+import { CounterModuleType } from "./Counter.module";
 
 interface Dependencies {
   counter: CounterModuleType;

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { color } from "../1App.styles";
+import { color } from "../App.styles";
 
 export const TopBar = styled.div`
   margin-bottom: 1rem;

@@ -1,5 +1,5 @@
-import { Button, Container, Title } from "../1App.styles";
-import { useApp } from "../1app.context";
+import { useApp } from "../App.context";
+import { Container, Title, Button } from "../App.styles";
 import { Route } from "../router/Router.core";
 
 export default function Home() {

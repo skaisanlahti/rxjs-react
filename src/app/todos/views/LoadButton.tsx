@@ -1,0 +1,19 @@
+import { useStream } from "../../../shared/hooks/observable-hooks";
+import { useApp } from "../../App.context";
+import { Button } from "../../App.styles";
+
+export function LoadButton() {
+  const app = useApp();
+  const todosLoading = useStream(app.todos.todosLoading);
+
+  return (
+    <Button
+      disabled={todosLoading}
+      onClick={() => {
+        app.todos.resetTodos.next();
+      }}
+    >
+      Load
+    </Button>
+  );
+}
