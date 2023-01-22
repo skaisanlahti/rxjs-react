@@ -1,5 +1,5 @@
 import { combineLatest, map, merge, switchMap, takeUntil, tap } from "rxjs";
-import Controller from "../../shared/utils/Controller";
+import controller from "../../shared/utils/controller";
 import { TodoModuleType } from "./Todos.module";
 
 interface Dependencies {
@@ -8,7 +8,7 @@ interface Dependencies {
 
 export default function TodoHandler({ todos }: Dependencies) {
   return function start() {
-    const { stopSignal, stop } = Controller();
+    const { stopSignal, stop } = controller();
     const { log } = console;
 
     // handle events

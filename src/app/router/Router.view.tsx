@@ -1,6 +1,6 @@
 import { useStream } from "../../shared/hooks/useObservableState";
-import { useApp } from "../App.context";
-import { Button, Container, Title } from "../App.styles";
+import { Button, Container, Title } from "../1App.styles";
+import { useApp } from "../1app.context";
 import { Route, routes } from "./Router.core";
 
 interface Props {}

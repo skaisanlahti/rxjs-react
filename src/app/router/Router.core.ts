@@ -1,6 +1,6 @@
-import Counter from "../counter/Counter.view";
-import Home from "../home/Home.view";
-import Todos from "../todos/Todos.view";
+import Counter from "../counter/1Counter.view";
+import Home from "../home/1Home.view";
+import Todos from "../todos/1Todos.view";
 
 export enum Route {
   Home = "home",

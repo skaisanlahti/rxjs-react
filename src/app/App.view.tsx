@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { useApp } from "./App.context";
 import { Page } from "./App.styles";
-import Header from "./header/Header.view";
-import Router from "./router/Router.view";
-
+import HeaderView from "./header/Header.view";
 export default function App() {
   const app = useApp();
 
@@ -15,7 +13,7 @@ export default function App() {
 
   return (
     <Page>
-      <Header />
+      <HeaderView />
       <Router />
     </Page>
   );

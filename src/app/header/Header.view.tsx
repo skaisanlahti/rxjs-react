@@ -1,7 +1,7 @@
 import { useStream } from "../../shared/hooks/useObservableState";
-import { useApp } from "../App.context";
+import { useApp } from "../1app.context";
 import { Route } from "../router/Router.core";
-import { NavItem, TopBar } from "./Header.styles";
+import { NavItem, TopBar } from "./1Header.styles";
 
 export default function HeaderView() {
   const app = useApp();

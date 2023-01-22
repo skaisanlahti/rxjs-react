@@ -1,5 +1,5 @@
 import { map, timer } from "rxjs";
-import { Todo } from "./models/Todo";
+import { Todo } from "../app/todos/Todos.core";
 import todosJson from "./todos.json";
 import genId from "./utils/genId";
 

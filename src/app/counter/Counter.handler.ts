@@ -1,8 +1,7 @@
 import { map, merge, takeUntil, tap, withLatestFrom } from "rxjs";
-import Controller from "../../shared/utils/Controller";
+import controller from "../../shared/utils/controller";
 import { loadFromStorage, saveToStorage } from "../../shared/utils/storage";
 import { Count, decrement, increment, setCount } from "./Counter.core";
-import { CounterModuleType } from "./Counter.module";
 
 interface Dependencies {
   counter: CounterModuleType;
@@ -10,7 +9,7 @@ interface Dependencies {
 
 export default function CounterHandler({ counter }: Dependencies) {
   return function start() {
-    const { stopSignal, stop } = Controller();
+    const { stopSignal, stop } = controller();
     const { log } = console;
 
     const inc = counter.increment.pipe(

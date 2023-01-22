@@ -1,7 +1,7 @@
 import { takeUntil, tap } from "rxjs";
-import Controller from "../../shared/utils/Controller";
+import controller from "../../shared/utils/controller";
 import { saveToStorage } from "../../shared/utils/storage";
-import RouterModule, { RouterModuleType } from "./Router.module";
+import RouterModule, { RouterModuleType } from "./1Router.module";
 
 interface Dependencies {
   router: RouterModuleType;
@@ -10,7 +10,7 @@ export default function RouterHandler(
   { router }: Dependencies = { router: RouterModule() }
 ) {
   return function start() {
-    const { stopSignal, stop } = Controller();
+    const { stopSignal, stop } = controller();
 
     router.changeRoute
       .pipe(

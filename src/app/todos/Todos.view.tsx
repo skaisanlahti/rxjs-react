@@ -1,6 +1,4 @@
 import { useStream } from "../../shared/hooks/useObservableState";
-import { Todo } from "../../shared/models/Todo";
-import { useApp } from "../App.context";
 import {
   Button,
   Card,
@@ -12,10 +10,13 @@ import {
   TextPart,
   Title,
   TodoHeading,
-} from "../App.styles";
+} from "../1App.styles";
+import { useApp } from "../1app.context";
+import { Todo } from "./Todos.core";
 
 export default function Todos() {
   return (
+import { from } from "rxjs";
     <Container>
       <Title>To do list</Title>
       <div>
