@@ -1,6 +1,6 @@
 import { combineLatest, map, takeUntil, tap } from "rxjs";
 import { DataSubject, Status } from "../../shared/utils/DataSubject";
-import controller from "../../shared/utils/controller";
+import createController from "../../shared/utils/createController";
 import { CounterModuleType } from "../counter/Counter.module";
 import { TodoModuleType } from "../todos/Todos.module";
 
@@ -10,7 +10,7 @@ interface Dependencies {
 }
 export default function CountTodosHandler({ counter, todos }: Dependencies) {
   return function start() {
-    const { stopSignal, stop } = controller();
+    const { stopSignal, stop } = createController();
 
     const sourceEventPairs = new Map([
       [todos.addTodoData, () => counter.increment.next()],

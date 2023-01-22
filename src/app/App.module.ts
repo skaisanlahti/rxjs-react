@@ -1,4 +1,4 @@
-import { startAll } from "../shared/utils/startAll";
+import { createGroupStarter } from "../shared/utils/createGroupStarter";
 import CountTodosHandler from "./count-todos/CountTodos.handler";
 import CounterHandler from "./counter/Counter.handler";
 import CounterModule from "./counter/Counter.module";
@@ -21,7 +21,7 @@ export default function AppModule() {
 
   const enableToggle = HiddenFieldHandler({ hidden, todos, api });
 
-  const start = startAll([
+  const start = createGroupStarter([
     RouterHandler({ router }),
     CounterHandler({ counter }),
     TodoHandler({ todos }),

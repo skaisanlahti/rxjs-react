@@ -1,6 +1,6 @@
 import { Subject } from "rxjs";
 
-export default function controller() {
+export default function createController() {
   const stopSignal = new Subject<void>();
   function stop() {
     stopSignal.next();

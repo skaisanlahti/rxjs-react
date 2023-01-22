@@ -1,5 +1,5 @@
 import { debounceTime, merge, takeUntil, tap, withLatestFrom } from "rxjs";
-import controller from "../../../shared/utils/controller";
+import createController from "../../../shared/utils/createController";
 import { keyPress } from "../../../shared/utils/keypress";
 import { saveToStorage } from "../../../shared/utils/storage";
 import { TodoModuleType } from "../Todos.module";
@@ -18,7 +18,7 @@ export default function HiddenFieldHandler({
   api,
 }: Dependencies) {
   return function start() {
-    const { stopSignal, stop } = controller();
+    const { stopSignal, stop } = createController();
 
     const update = api.updateDelay.pipe(
       tap((value) => api.mockDelay.next(value)),

@@ -2,14 +2,14 @@
 
 ## Table of Contents
 
-- [Ideas for modular architecture using RxJS and React](#ideas-for-modular-architecture-using-react-and-rxJS)
+- [Ideas for modular architecture using RxJS and React](#ideas-for-modular-architecture-using-rxjs-and-react)
   - [Application layers](#application-layers)
   - [Dependency injection](#dependency-injection)
   - [Case for observable interfaces](#case-for-observable-interfaces)
 - [Implementation details](#implementation-details)
   - [State modules](#state-modules)
   - [Event handling](#event-handling)
-  - [RxJs-React integrations](#rxjs-react-integrations)
+  - [RxJS-React integrations](#rxjs-react-integrations)
   - [Folder structure](#folder-structure)
 
 ## Ideas for modular architecture using RxJS and React
@@ -72,7 +72,7 @@ Event handling is implemented by passing a state container to a function that co
 
 This pattern allows for the logic to be broken into arbitrarily sized reactive systems so that it can be organized and extended freely. All logic is asyncronous and unblocking.
 
-### RxJs-React integrations
+### RxJS-React integrations
 
 React Context API is used as a dependency injection method to give all the components access to the application layer through a custom hook.
 
