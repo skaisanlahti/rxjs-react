@@ -1,10 +1,10 @@
-import { useStream } from "../../../shared/hooks/observable-hooks";
+import { useStateSubject } from "../../../shared/hooks/observable-hooks";
 import { useApp } from "../../App.context";
 import { TodoCard } from "./TodoCard";
 
 export function TodoList() {
   const app = useApp();
-  const todos = useStream(app.todos.getTodosData, (s) => s.data);
+  const todos = useStateSubject(app.todos.getTodosData, (s) => s.data);
 
   return (
     <>

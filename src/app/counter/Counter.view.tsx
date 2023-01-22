@@ -1,10 +1,10 @@
-import { useStream } from "../../shared/hooks/observable-hooks";
+import { useStateSubject } from "../../shared/hooks/observable-hooks";
 import { useApp } from "../App.context";
 import { Button, Container, Title } from "../App.styles";
 
 export default function Counter() {
   const app = useApp();
-  const count = useStream(app.counter.count, (s) => s.value);
+  const count = useStateSubject(app.counter.count, (s) => s.value);
 
   return (
     <Container>

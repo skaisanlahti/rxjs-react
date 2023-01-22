@@ -1,4 +1,4 @@
-import { useStream } from "../../../shared/hooks/observable-hooks";
+import { useStateSubject } from "../../../shared/hooks/observable-hooks";
 import { useApp } from "../../App.context";
 import {
   Button,
@@ -13,8 +13,14 @@ import { Todo } from "../Todos.core";
 
 export function TodoCard({ item }: { item: Todo }) {
   const app = useApp();
-  const isDeleting = useStream(app.todos.deleteTodoData, (s) => s.isLoading);
-  const isChecking = useStream(app.todos.checkTodoData, (s) => s.isLoading);
+  const isDeleting = useStateSubject(
+    app.todos.deleteTodoData,
+    (s) => s.isLoading
+  );
+  const isChecking = useStateSubject(
+    app.todos.checkTodoData,
+    (s) => s.isLoading
+  );
 
   return (
     <Card

@@ -1,11 +1,11 @@
-import { useStream } from "../../../shared/hooks/observable-hooks";
+import { useStateSubject } from "../../../shared/hooks/observable-hooks";
 import { useApp } from "../../App.context";
 import { Input } from "../../App.styles";
 
 export function TodoInputs() {
   const app = useApp();
-  const title = useStream(app.todos.title);
-  const description = useStream(app.todos.description);
+  const title = useStateSubject(app.todos.title);
+  const description = useStateSubject(app.todos.description);
 
   return (
     <>

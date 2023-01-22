@@ -8,12 +8,12 @@ import {
 } from "rxjs";
 
 // Rxjs-React-adapter with selector support using useState
-export function useStream<T>(subject: BehaviorSubject<T>): T;
-export function useStream<T, K>(
+export function useStateSubject<T>(subject: BehaviorSubject<T>): T;
+export function useStateSubject<T, K>(
   subject: BehaviorSubject<T>,
   selector: (value: T) => K
 ): K;
-export function useStream<T, K>(
+export function useStateSubject<T, K>(
   subject: BehaviorSubject<T>,
   selector?: (value: T) => K
 ): T | K {
@@ -41,19 +41,19 @@ export function useStream<T, K>(
 }
 
 // Rxjs-React-adapter with selector support using useSyncExternalStore
-export function useObservableState<T>(subject: BehaviorSubject<T>): T;
-export function useObservableState<T, K>(
+export function useStoreSubject<T>(subject: BehaviorSubject<T>): T;
+export function useStoreSubject<T, K>(
   subject: BehaviorSubject<T>,
   selector: (value: T) => K
 ): K;
-export function useObservableState<T, K>(
+export function useStoreSubject<T, K>(
   subject: BehaviorSubject<T>,
   selector?: (value: T) => K
 ): T | K {
   return useSyncExternalStore(
     (onStoreChange) => {
       if (selector) {
-        const [innerSubject, innerSubscription] = selectSubscribe(
+        const [innerSubject, innerSubscription] = subscribeWithSelector(
           subject,
           selector
         );
@@ -70,7 +70,7 @@ export function useObservableState<T, K>(
     },
     () => {
       if (selector) {
-        return selectSnapshot(subject, selector);
+        return getSnapshotWithSelector(subject, selector);
       } else {
         return subject.getValue();
       }
@@ -78,7 +78,7 @@ export function useObservableState<T, K>(
   );
 }
 
-function selectSubscribe<T, K>(
+function subscribeWithSelector<T, K>(
   subject: BehaviorSubject<T>,
   selector: (value: T) => K
 ): readonly [
@@ -92,7 +92,7 @@ function selectSubscribe<T, K>(
   return [innerSubject, innerSubscription] as const;
 }
 
-function selectSnapshot<T, K>(
+function getSnapshotWithSelector<T, K>(
   subject: BehaviorSubject<T>,
   selector: (value: T) => K
 ) {

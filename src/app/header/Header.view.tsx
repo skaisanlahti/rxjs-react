@@ -1,11 +1,11 @@
-import { useStream } from "../../shared/hooks/observable-hooks";
+import { useStateSubject } from "../../shared/hooks/observable-hooks";
 import { useApp } from "../App.context";
 import { Route } from "../router/Router.core";
 import { NavItem, TopBar } from "./Header.styles";
 
 export default function Header() {
   const app = useApp();
-  const route = useStream(app.router.route);
+  const route = useStateSubject(app.router.route);
 
   return (
     <TopBar>
