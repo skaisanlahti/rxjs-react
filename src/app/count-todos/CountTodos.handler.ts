@@ -1,8 +1,8 @@
 import { combineLatest, map, takeUntil, tap } from "rxjs";
-import { CounterModuleType } from "../../app/counter/Counter.module";
-import { TodoModuleType } from "../../app/todos/Todos.module";
-import { DataSubject, Status } from "../utils/DataSubject";
-import controller from "../utils/controller";
+import { DataSubject, Status } from "../../shared/utils/DataSubject";
+import controller from "../../shared/utils/controller";
+import { CounterModuleType } from "../counter/Counter.module";
+import { TodoModuleType } from "../todos/Todos.module";
 
 interface Dependencies {
   todos: TodoModuleType;

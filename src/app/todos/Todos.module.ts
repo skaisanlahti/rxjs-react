@@ -1,6 +1,6 @@
 import { BehaviorSubject, Subject } from "rxjs";
-import ApiModule, { ApiModuleType } from "../../shared/1api.mock";
 import { withLoadingStates } from "../../shared/utils/withLoadingStates";
+import ApiModule, { ApiModuleType } from "../api-mock/Api.module";
 import { NewTodo } from "./Todos.core";
 
 export type TodoModuleType = ReturnType<typeof TodoModule>;
@@ -14,6 +14,7 @@ export default function TodoModule(
 ) {
   const title = new BehaviorSubject("");
   const description = new BehaviorSubject("");
+  const isTodoFieldFocused = new BehaviorSubject(false);
 
   const getTodos = new Subject<void>();
   const addTodo = new Subject<NewTodo>();
@@ -32,6 +33,7 @@ export default function TodoModule(
     // state
     title,
     description,
+    isTodoFieldFocused,
 
     // events
     getTodos,

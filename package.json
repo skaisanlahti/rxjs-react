@@ -1,5 +1,11 @@
 {
-  "name": "aspect",
+  "name": "@skaisanlahti/rxjs-react",
+  "description": "Ideas for RxJS+React architecture",
+  "author": {
+    "name": "Sami Kaisanlahti",
+    "email": "skaisanlahti@gmail.com",
+    "url": "https://github.com/skaisanlahti"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
