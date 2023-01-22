@@ -1,5 +1,5 @@
 import { BehaviorSubject } from "rxjs";
-import { Sort } from "../shared/models/Sort";
+import { Sort } from "./Sort";
 
 interface Dependencies {
   sort: BehaviorSubject<Sort>;

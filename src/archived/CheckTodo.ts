@@ -1,5 +1,5 @@
 import { BehaviorSubject } from "rxjs";
-import { Todo } from "../shared/models/Todo";
+import { Todo } from "../app/todos/Todos.core";
 
 interface Dependencies {
   todos: BehaviorSubject<Todo[]>;

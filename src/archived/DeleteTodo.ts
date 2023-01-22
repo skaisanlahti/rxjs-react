@@ -1,4 +1,4 @@
-import { Todo } from "../shared/models/Todo";
+import { Todo } from "../app/todos/Todos.core";
 import { DataSubject } from "../shared/utils/DataSubject";
 
 interface Dependencies {

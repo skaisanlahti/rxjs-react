@@ -1,4 +1,4 @@
-import { Todo } from "../shared/models/Todo";
+import { Todo } from "../app/todos/Todos.core";
 import { DataSubject } from "../shared/utils/DataSubject";
 import genId from "../shared/utils/genId";
 
@@ -18,11 +18,3 @@ export function AddTodo({ todos }: Dependencies) {
     todos.success([...oldtodos, newTodo]);
   };
 }
-
-// export function AddTodoObs({ todos }: Dependencies) {
-//   return ({ title, description }: Input) => {
-//     const newTodo = { id: genId(), title, description, done: false };
-//     todos.next([...todos.value, newTodo]);
-//     return of(true);
-//   };
-// }
