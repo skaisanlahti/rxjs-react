@@ -31,17 +31,20 @@ export default function TodoModule(
   return {
     title,
     description,
+
     getTodos,
     addTodo,
     deleteTodo,
     checkTodo,
     resetTodos,
+
     getTodosData,
     addTodoData,
     deleteTodoData,
     checkTodoData,
     resetTodosData,
     todosLoading,
+
     getTodosLoad,
     addTodoLoad,
     deleteTodoLoad,

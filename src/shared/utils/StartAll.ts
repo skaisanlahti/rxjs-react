@@ -1,4 +1,4 @@
-export function startAll(startFuncs: Function[]) {
+export function StartAll(startFuncs: Function[]) {
   return function start() {
     const stopFuncs: Function[] = [];
     for (const startFunc of startFuncs) {

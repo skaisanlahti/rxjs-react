@@ -1,6 +1,6 @@
 import ApiModule from "../shared/Api.mock";
 import CounterTodosHandler from "../shared/handlers/CounterTodos.handler";
-import { startAll } from "../shared/utils/startAll";
+import { StartAll } from "../shared/utils/StartAll";
 import CounterHandler from "./counter/Counter.handler";
 import CounterModule from "./counter/Counter.module";
 import RouterHandler from "./router/Router.handler";
@@ -14,7 +14,7 @@ export default function AppModule() {
   const counter = CounterModule();
   const todos = TodoModule({ api });
 
-  const start = startAll([
+  const start = StartAll([
     RouterHandler({ router }),
     CounterHandler({ counter }),
     TodoHandler({ todos }),
