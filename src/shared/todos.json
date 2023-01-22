@@ -1,0 +1,22 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "title": "Shopping",
+      "description": "Buy some potatos",
+      "done": false
+    },
+    {
+      "id": "2",
+      "title": "Studying",
+      "description": "Study some potatos",
+      "done": false
+    },
+    {
+      "id": "3",
+      "title": "Work",
+      "description": "Make some potatos",
+      "done": false
+    }
+  ]
+}
