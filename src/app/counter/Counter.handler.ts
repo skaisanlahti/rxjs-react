@@ -1,15 +1,13 @@
 import { map, merge, takeUntil, tap, withLatestFrom } from "rxjs";
 import Controller from "../../shared/utils/Control";
 import { loadFromStorage, saveToStorage } from "../../shared/utils/storage";
-import { TodoModuleType } from "../todos/Todos.module";
 import { Count, decrement, increment, reset } from "./Counter.core";
 import { CounterModuleType } from "./Counter.module";
 
 interface Dependencies {
   counter: CounterModuleType;
-  todos: TodoModuleType;
 }
-export default function CounterHandler({ counter, todos }: Dependencies) {
+export default function CounterHandler({ counter }: Dependencies) {
   return function start() {
     const { stopSignal, stop } = Controller();
 
@@ -28,6 +26,11 @@ export default function CounterHandler({ counter, todos }: Dependencies) {
       map(([_, count]) => reset(count))
     );
 
+    const actions = merge(inc, dec, zero).pipe(
+      tap((count) => counter.count.next(count)),
+      tap((count) => counter.saveCount.next(count))
+    );
+
     const load = counter.loadCount.pipe(
       map(() => loadFromStorage<Count>("count")),
       tap((count) => {
@@ -37,11 +40,6 @@ export default function CounterHandler({ counter, todos }: Dependencies) {
 
     const save = counter.saveCount.pipe(
       map((count) => saveToStorage("count", count))
-    );
-
-    const actions = merge(inc, dec, zero).pipe(
-      tap((count) => counter.count.next(count)),
-      tap((count) => counter.saveCount.next(count))
     );
 
     merge(actions, load, save).pipe(takeUntil(stopSignal)).subscribe();

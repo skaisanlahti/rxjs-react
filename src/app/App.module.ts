@@ -16,7 +16,7 @@ export default function AppModule() {
 
   const start = startAll([
     RouterHandler({ router }),
-    CounterHandler({ counter, todos }),
+    CounterHandler({ counter }),
     TodoHandler({ todos }),
     CounterTodosHandler({ counter, todos }),
   ]);

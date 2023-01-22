@@ -7,6 +7,7 @@ import {
   share,
 } from "rxjs";
 
+// Rxjs-React-adapter with selector support using useState
 export function useStream<T>(subject: BehaviorSubject<T>): T;
 export function useStream<T, K>(
   subject: BehaviorSubject<T>,
@@ -39,6 +40,7 @@ export function useStream<T, K>(
   return state;
 }
 
+// Rxjs-React-adapter with selector support using useSyncExternalStore
 export function useObservableState<T>(subject: BehaviorSubject<T>): T;
 export function useObservableState<T, K>(
   subject: BehaviorSubject<T>,
@@ -118,37 +120,3 @@ export function select<T, K>(
   };
   return [innerSubject, innerSubscription, cleanUp] as const;
 }
-
-// export function useSelector<T>(
-//   selector: (value: Application) => T | BehaviorSubject<T>
-// ) {
-//   return useSyncExternalStore(
-//     (onStoreChange) => {
-//       const initialValue = selector(application);
-//       if (initialValue instanceof BehaviorSubject) {
-//         const sub = (selector(application) as BehaviorSubject<T>).subscribe(onStoreChange);
-//         return () => sub.unsubscribe();
-//       } else {
-
-//         return;
-//       }
-//     },
-//     () => {
-//       const initialValue = selector(application);
-//       if (initialValue instanceof BehaviorSubject) {
-//         return initialValue.getValue();
-//       } else {
-//         const mappedValue = selector(initialValue);
-//         const bhs = new InternalBehaviorSubject<K>(mappedValue);
-//         const sub = subject.pipe(map(selector)).subscribe(bhs);
-//         const cleanUp = () => {
-//           sub.unsubscribe();
-//           bhs.complete();
-//           console.log("Select clean up");
-//         };
-//         bhs.cleanUp = cleanUp;
-//         return bhs;
-//       }
-//     }
-//   );
-// }
