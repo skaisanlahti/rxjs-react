@@ -1,5 +1,4 @@
 import { startAll } from "../shared/utils/startAll";
-import ApiModule from "./api-mock/Api.module";
 import CountTodosHandler from "./count-todos/CountTodos.handler";
 import CounterHandler from "./counter/Counter.handler";
 import CounterModule from "./counter/Counter.module";
@@ -7,6 +6,7 @@ import RouterHandler from "./router/Router.handler";
 import RouterModule from "./router/Router.module";
 import TodoHandler from "./todos/Todos.handler";
 import TodoModule from "./todos/Todos.module";
+import ApiModule from "./todos/api-mock/Api.module";
 import HiddenFieldHandler from "./todos/hidden-field/HiddenField.handler";
 import HiddenFieldModule from "./todos/hidden-field/HiddenField.module";
 

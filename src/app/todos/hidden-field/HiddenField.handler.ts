@@ -2,8 +2,8 @@ import { debounceTime, merge, takeUntil, tap, withLatestFrom } from "rxjs";
 import controller from "../../../shared/utils/controller";
 import { keyPress } from "../../../shared/utils/keypress";
 import { saveToStorage } from "../../../shared/utils/storage";
-import { ApiModuleType } from "../../api-mock/Api.module";
 import { TodoModuleType } from "../Todos.module";
+import { ApiModuleType } from "../api-mock/Api.module";
 import { HiddenFieldModuleType } from "./HiddenField.module";
 
 interface Dependencies {

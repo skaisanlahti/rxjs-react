@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subject } from "rxjs";
 import { withLoadingStates } from "../../shared/utils/withLoadingStates";
-import ApiModule, { ApiModuleType } from "../api-mock/Api.module";
 import { NewTodo } from "./Todos.core";
+import ApiModule, { ApiModuleType } from "./api-mock/Api.module";
 
 export type TodoModuleType = ReturnType<typeof TodoModule>;
 

@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subject, map, timer } from "rxjs";
-import todosJson from "../../shared/todos.json";
-import genId from "../../shared/utils/genId";
-import { Todo } from "../todos/Todos.core";
+import todosJson from "../../../shared/todos.json";
+import genId from "../../../shared/utils/genId";
+import { Todo } from "../Todos.core";
 
 export type ApiModuleType = ReturnType<typeof ApiModule>;
 
