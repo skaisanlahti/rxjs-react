@@ -1,5 +1,5 @@
 import { combineLatest, map, merge, switchMap, takeUntil, tap } from "rxjs";
-import Controller from "../../shared/utils/Control";
+import Controller from "../../shared/utils/Controller";
 import { TodoModuleType } from "./Todos.module";
 
 interface Dependencies {
@@ -12,22 +12,13 @@ export default function TodoHandler({ todos }: Dependencies) {
     const { log } = console;
 
     // handle events
-    const reset = todos.resetTodos.pipe(
-      tap(() => log("reset todo")),
-      switchMap(todos.resetTodosLoad)
-    );
     const get = todos.getTodos.pipe(
       tap(() => log("get todos")),
-
       switchMap(todos.getTodosLoad)
     );
     const check = todos.checkTodo.pipe(
       tap(() => log("check todo")),
       switchMap(todos.checkTodoLoad)
-    );
-    const remove = todos.deleteTodo.pipe(
-      tap(() => log("delete todo")),
-      switchMap(todos.deleteTodoLoad)
     );
     const add = todos.addTodo.pipe(
       tap(() => log("add todo")),
@@ -36,6 +27,14 @@ export default function TodoHandler({ todos }: Dependencies) {
         todos.title.next("");
         todos.description.next("");
       })
+    );
+    const remove = todos.deleteTodo.pipe(
+      tap(() => log("delete todo")),
+      switchMap(todos.deleteTodoLoad)
+    );
+    const reset = todos.resetTodos.pipe(
+      tap(() => log("reset todo")),
+      switchMap(todos.resetTodosLoad)
     );
 
     // handle refetching todos after actions

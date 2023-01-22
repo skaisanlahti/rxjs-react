@@ -1,5 +1,5 @@
 import { takeUntil, tap } from "rxjs";
-import Controller from "../../shared/utils/Control";
+import Controller from "../../shared/utils/Controller";
 import { saveToStorage } from "../../shared/utils/storage";
 import RouterModule, { RouterModuleType } from "./Router.module";
 

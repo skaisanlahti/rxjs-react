@@ -46,7 +46,7 @@ export function LoadButton() {
 
 export function TodoList() {
   const app = useApp();
-  const { data: todos } = useStream(app.todos.getTodosData);
+  const todos = useStream(app.todos.getTodosData, (s) => s.data);
 
   return (
     <>
@@ -59,13 +59,13 @@ export function TodoList() {
 
 export function TodoCard({ item }: { item: Todo }) {
   const app = useApp();
-  const deleteLoading = useStream(app.todos.deleteTodoData, (s) => s.isLoading);
-  const checkLoading = useStream(app.todos.checkTodoData, (s) => s.isLoading);
+  const isDeleting = useStream(app.todos.deleteTodoData, (s) => s.isLoading);
+  const isChecking = useStream(app.todos.checkTodoData, (s) => s.isLoading);
 
   return (
     <Card
       onClick={() => {
-        if (!checkLoading) {
+        if (!isChecking) {
           app.todos.checkTodo.next({ id: item.id });
         }
       }}
@@ -75,6 +75,8 @@ export function TodoCard({ item }: { item: Todo }) {
           style={{
             width: "20px",
             height: "20px",
+            borderRadius: "50%",
+            border: "1px solid hsla(0,100%,100%,0.4)",
             backgroundColor: item.done ? "green" : "red",
           }}
         />
@@ -85,7 +87,7 @@ export function TodoCard({ item }: { item: Todo }) {
       </TextPart>
       <Part>
         <Button
-          disabled={deleteLoading}
+          disabled={isDeleting}
           onClick={(e) => {
             e.stopPropagation();
             app.todos.deleteTodo.next({ id: item.id });
@@ -123,14 +125,14 @@ export function AddTodo() {
 
 export function AddButton() {
   const app = useApp();
-  const isLoading = useStream(app.todos.addTodoData, (s) => s.isLoading);
+  const isProcessing = useStream(app.todos.addTodoData, (s) => s.isLoading);
   const title = useStream(app.todos.title);
   const description = useStream(app.todos.description);
 
   return (
     <>
       <Button
-        disabled={isLoading}
+        disabled={isProcessing}
         onClick={() => {
           app.todos.addTodo.next({ title, description });
         }}

@@ -17,8 +17,8 @@ export function decrement(count: Count, input: number | void): Count {
   return newCount;
 }
 
-export function reset(count: Count): Count {
+export function setCount(count: Count, input: number): Count {
   const newCount = { ...count };
-  newCount.value = 0;
+  newCount.value = input;
   return newCount;
 }
