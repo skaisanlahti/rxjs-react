@@ -29,15 +29,18 @@ export default function TodoModule(
   const todosLoading = new BehaviorSubject(false);
 
   return {
+    // state
     title,
     description,
 
+    // events
     getTodos,
     addTodo,
     deleteTodo,
     checkTodo,
     resetTodos,
 
+    // data
     getTodosData,
     addTodoData,
     deleteTodoData,
@@ -45,6 +48,7 @@ export default function TodoModule(
     resetTodosData,
     todosLoading,
 
+    // loaders
     getTodosLoad,
     addTodoLoad,
     deleteTodoLoad,
