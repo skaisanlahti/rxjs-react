@@ -8,6 +8,8 @@ import RouterModule from "./router/Router.module";
 import TodoHandler from "./todos/Todos.handler";
 import TodoModule from "./todos/Todos.module";
 
+export type Application = ReturnType<typeof AppModule>;
+
 export default function AppModule() {
   const api = ApiModule();
   const router = RouterModule();
@@ -28,5 +30,3 @@ export default function AppModule() {
     todos,
   };
 }
-
-export type Application = ReturnType<typeof AppModule>;
