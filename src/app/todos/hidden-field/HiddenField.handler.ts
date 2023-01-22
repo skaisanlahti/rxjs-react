@@ -29,10 +29,8 @@ export default function HiddenFieldHandler({
     const keyTap = keyPress("d").pipe(
       withLatestFrom(hidden.isDelayFieldHidden, todos.isTodoFieldFocused),
       tap(([_, isDelayFieldHidden, isTodoFieldFocused]) => {
-        if (!isDelayFieldHidden && !isTodoFieldFocused)
-          return hidden.isDelayFieldHidden.next(!isDelayFieldHidden);
-        else if (isDelayFieldHidden && !isTodoFieldFocused)
-          return hidden.isDelayFieldHidden.next(!isDelayFieldHidden);
+        if (isTodoFieldFocused) return;
+        return hidden.isDelayFieldHidden.next(!isDelayFieldHidden);
       })
     );
 

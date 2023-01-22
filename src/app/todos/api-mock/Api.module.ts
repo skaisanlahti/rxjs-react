@@ -1,6 +1,7 @@
 import { BehaviorSubject, Subject, map, timer } from "rxjs";
 import todosJson from "../../../shared/todos.json";
 import genId from "../../../shared/utils/genId";
+import { loadFromStorageToState } from "../../../shared/utils/storage";
 import { Todo } from "../Todos.core";
 
 export type ApiModuleType = ReturnType<typeof ApiModule>;
@@ -9,6 +10,8 @@ export default function ApiModule() {
   let todos = todosJson.todos as Todo[];
   const mockDelay = new BehaviorSubject(500);
   const updateDelay = new Subject<number>();
+
+  loadFromStorageToState("delay", mockDelay);
 
   function resetTodos() {
     return timer(mockDelay.getValue()).pipe(

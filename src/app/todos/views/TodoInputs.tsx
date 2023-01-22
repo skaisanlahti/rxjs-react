@@ -13,6 +13,8 @@ export function TodoInputs() {
     <>
       <HiddenField />
       <Input
+        onFocus={() => app.todos.isTodoFieldFocused.next(true)}
+        onBlur={() => app.todos.isTodoFieldFocused.next(false)}
         autoFocus={isDelayFieldHidden}
         type="text"
         value={title}
@@ -20,6 +22,8 @@ export function TodoInputs() {
         onChange={(e) => app.todos.title.next(e.target.value)}
       />
       <Input
+        onFocus={() => app.todos.isTodoFieldFocused.next(true)}
+        onBlur={() => app.todos.isTodoFieldFocused.next(false)}
         type="text"
         value={description}
         placeholder="Description"
