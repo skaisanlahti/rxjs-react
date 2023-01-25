@@ -10,9 +10,9 @@ import ApiModule from "./todos/api-mock/Api.module";
 import HiddenFieldHandler from "./todos/hidden-field/HiddenField.handler";
 import HiddenFieldModule from "./todos/hidden-field/HiddenField.module";
 
-export type Application = ReturnType<typeof AppModule>;
+export type Application = ReturnType<typeof ApplicationModule>;
 
-export default function AppModule() {
+export default function ApplicationModule() {
   const api = ApiModule();
   const router = RouterModule();
   const counter = CounterModule();

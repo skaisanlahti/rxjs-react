@@ -9,7 +9,7 @@ export default function App() {
 
   useEffect(() => {
     const stop = app.start();
-    app.todos.getTodos.next();
+    app.todos.get.next();
     return () => stop();
   }, []);
 

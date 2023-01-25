@@ -10,7 +10,7 @@ export function LoadButton() {
     <Button
       disabled={todosLoading}
       onClick={() => {
-        app.todos.resetTodos.next();
+        app.todos.reset.next();
       }}
     >
       Load

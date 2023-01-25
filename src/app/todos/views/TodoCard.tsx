@@ -14,11 +14,11 @@ import { Todo } from "../Todos.core";
 export function TodoCard({ item }: { item: Todo }) {
   const app = useApp();
   const isDeleting = useStateSubject(
-    app.todos.deleteTodoData,
+    app.todos.removeRequest,
     (s) => s.isLoading
   );
   const isChecking = useStateSubject(
-    app.todos.checkTodoData,
+    app.todos.checkRequest,
     (s) => s.isLoading
   );
 
@@ -26,7 +26,7 @@ export function TodoCard({ item }: { item: Todo }) {
     <Card
       onClick={() => {
         if (!isChecking) {
-          app.todos.checkTodo.next({ id: item.id });
+          app.todos.check.next({ id: item.id });
         }
       }}
     >
@@ -50,7 +50,7 @@ export function TodoCard({ item }: { item: Todo }) {
           disabled={isDeleting}
           onClick={(e) => {
             e.stopPropagation();
-            app.todos.deleteTodo.next({ id: item.id });
+            app.todos.remove.next({ id: item.id });
           }}
         >
           Remove

@@ -1,5 +1,4 @@
-import { combineLatest, map, merge, switchMap, takeUntil, tap } from "rxjs";
-import createController from "../../shared/utils/createController";
+import { combineLatest, map, merge, switchMap, tap } from "rxjs";
 import { TodoModuleType } from "./Todos.module";
 
 interface Dependencies {
@@ -8,55 +7,59 @@ interface Dependencies {
 
 export default function TodoHandler({ todos }: Dependencies) {
   return function start() {
-    const { stopSignal, stop } = createController();
     const { log } = console;
 
     // handle events
-    const get = todos.getTodos.pipe(
+    const onGet = todos.get.pipe(
       tap(() => log("get todos")),
-      switchMap(todos.getTodosLoad)
+      switchMap(todos.getRequest.send),
+      tap((items) => {
+        todos.items.next(items);
+      })
     );
-    const check = todos.checkTodo.pipe(
+    const onCheck = todos.check.pipe(
       tap(() => log("check todo")),
-      switchMap(todos.checkTodoLoad)
+      switchMap(todos.checkRequest.send)
     );
-    const add = todos.addTodo.pipe(
+    const onAdd = todos.add.pipe(
       tap(() => log("add todo")),
-      switchMap(todos.addTodoLoad),
+      switchMap(todos.addRequest.send),
       tap(() => {
         todos.title.next("");
         todos.description.next("");
       })
     );
-    const remove = todos.deleteTodo.pipe(
+    const onRemove = todos.remove.pipe(
       tap(() => log("delete todo")),
-      switchMap(todos.deleteTodoLoad)
+      switchMap(todos.removeRequest.send)
     );
-    const reset = todos.resetTodos.pipe(
+    const onReset = todos.reset.pipe(
       tap(() => log("reset todo")),
-      switchMap(todos.resetTodosLoad)
+      switchMap(todos.resetRequest.send)
     );
 
     // handle refetching todos after actions
-    const actions = merge(add, check, remove, reset).pipe(
-      tap(() => todos.getTodos.next())
+    const onActions = merge(onAdd, onCheck, onRemove, onReset).pipe(
+      tap(() => todos.get.next())
     );
 
     // handle loading indicator
-    const loading = combineLatest([
-      todos.addTodoData,
-      todos.deleteTodoData,
-      todos.checkTodoData,
-      todos.getTodosData,
-      todos.resetTodosData,
+    const onLoading = combineLatest([
+      todos.addRequest,
+      todos.removeRequest,
+      todos.checkRequest,
+      todos.getRequest,
+      todos.resetRequest,
     ]).pipe(
       map((data) => data.some((data) => data.isLoading === true)),
       tap((value) => todos.todosLoading.next(value))
     );
 
-    // merge all pipes and start
-    merge(actions, get, loading).pipe(takeUntil(stopSignal)).subscribe();
+    // merge all streams and start
+    const subscription = merge(onActions, onGet, onLoading).subscribe();
 
-    return stop;
+    return () => {
+      subscription.unsubscribe();
+    };
   };
 }

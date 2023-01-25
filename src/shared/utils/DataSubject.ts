@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable, catchError, tap } from "rxjs";
 
 export type Status = "idle" | "loading" | "success" | "error";
 
@@ -18,9 +18,22 @@ const initialState = {
   isError: false,
 } as const;
 
-export class DataSubject<T> extends BehaviorSubject<Data<T>> {
-  constructor() {
+export class DataSubject<T, P> extends BehaviorSubject<Data<T>> {
+  send: (params: P) => Observable<T>;
+
+  constructor(request: (params: P) => Observable<T>) {
     super(initialState);
+
+    this.send = (params: P) => {
+      this.loading();
+      return request(params).pipe(
+        tap((res) => this.success(res)),
+        catchError((error, res) => {
+          this.error(error);
+          return res;
+        })
+      );
+    };
   }
 
   success(data: T) {
