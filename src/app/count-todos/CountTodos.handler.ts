@@ -1,6 +1,5 @@
-import { combineLatest, map, takeUntil, tap } from "rxjs";
-import { DataSubject, Status } from "../../shared/utils/DataSubject";
-import createController from "../../shared/utils/createController";
+import { filter, merge, tap } from "rxjs";
+import { Data } from "../../shared/utils/DataSubject";
 import { CounterModuleType } from "../counter/Counter.module";
 import { TodoModuleType } from "../todos/Todos.module";
 
@@ -10,42 +9,29 @@ interface Dependencies {
 }
 export default function CountTodosHandler({ counter, todos }: Dependencies) {
   return function start() {
-    const { stopSignal, stop } = createController();
+    const onAddOk = todos.addRequest.pipe(
+      filter(ok),
+      tap(() => counter.increment.next())
+    );
 
-    const sourceEventPairs = new Map([
-      [todos.addTodoData, () => counter.increment.next()],
-      [todos.deleteTodoData, () => counter.decrement.next()],
-      [todos.resetTodosData, () => counter.reset.next()],
-    ]);
+    const onRemoveOk = todos.removeRequest.pipe(
+      filter(ok),
+      tap(() => counter.decrement.next())
+    );
 
-    emitMappedEventOn("success", sourceEventPairs)
-      .pipe(takeUntil(stopSignal))
-      .subscribe();
+    const onResetOk = todos.resetRequest.pipe(
+      filter(ok),
+      tap(() => counter.reset.next())
+    );
 
-    return stop;
+    const subscription = merge(onAddOk, onRemoveOk, onResetOk).subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   };
 }
 
-function emitMappedEventOn(
-  emitOn: Status,
-  sourceEventPairs: Map<DataSubject<any>, Function>
-) {
-  let cache: Status[] = [];
-  return combineLatest([...sourceEventPairs.keys()]).pipe(
-    map((streams) => {
-      return streams.map((stream, index) => {
-        if (stream.status !== cache[index] && stream.status === emitOn) {
-          cache[index] = stream.status;
-          return true;
-        }
-        cache[index] = stream.status;
-        return false;
-      });
-    }),
-    tap((conditions) => {
-      for (let i = 0; i < conditions.length; ++i) {
-        if (conditions[i]) [...sourceEventPairs.values()][i]();
-      }
-    })
-  );
+function ok(value: Data<any>) {
+  return value.isSuccess === true && value.data !== undefined;
 }

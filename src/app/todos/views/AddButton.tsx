@@ -4,19 +4,19 @@ import { Button } from "../../App.styles";
 
 export function AddButton() {
   const app = useApp();
-  const isProcessing = useStateSubject(
-    app.todos.addTodoData,
-    (s) => s.isLoading
-  );
   const title = useStateSubject(app.todos.title);
   const description = useStateSubject(app.todos.description);
+  const isProcessing = useStateSubject(
+    app.todos.addRequest,
+    (s) => s.isLoading
+  );
 
   return (
     <>
       <Button
         disabled={isProcessing}
         onClick={() => {
-          app.todos.addTodo.next({ title, description });
+          app.todos.add.next({ title, description });
         }}
       >
         Add todo

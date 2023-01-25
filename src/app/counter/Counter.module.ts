@@ -9,21 +9,13 @@ interface Dependencies {}
 
 export default function CounterModule({}: Dependencies = {}) {
   const count = new BehaviorSubject<Count>({ id: genId(), value: 0 });
-
-  const increment = new Subject<number | void>();
-  const decrement = new Subject<number | void>();
-  const reset = new Subject<void>();
-  const loadCount = new Subject<void>();
-  const saveCount = new Subject<Count>();
-
   loadFromStorageToState("count", count);
-
   return {
     count,
-    reset,
-    increment,
-    decrement,
-    loadCount,
-    saveCount,
+    increment: new Subject<number | void>(),
+    decrement: new Subject<number | void>(),
+    reset: new Subject<void>(),
+    loadCount: new Subject<void>(),
+    saveCount: new Subject<Count>(),
   };
 }

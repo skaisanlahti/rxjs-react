@@ -10,8 +10,8 @@ export default function Todos() {
   const app = useApp();
 
   useEffect(() => {
-    const disable = app.enableToggle();
-    return () => disable();
+    const disableToggle = app.enableToggle();
+    return () => disableToggle();
   }, []);
 
   return (

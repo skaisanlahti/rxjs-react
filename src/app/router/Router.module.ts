@@ -8,12 +8,9 @@ interface Dependencies {}
 
 export default function RouterModule({}: Dependencies = {}) {
   const route = new BehaviorSubject<Route>(Route.Home);
-  const changeRoute = new Subject<Route>();
-
   loadFromStorageToState("route", route);
-
   return {
     route,
-    changeRoute,
+    changeRoute: new Subject<Route>(),
   };
 }
