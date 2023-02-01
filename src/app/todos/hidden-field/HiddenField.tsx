@@ -1,6 +1,6 @@
 import { useStateSubject } from "../../../shared/hooks/observable-hooks";
-import { useApp } from "../../App.context";
-import { Input } from "../../App.styles";
+import { useApp } from "../../AppContext";
+import { Input } from "../../AppStyles";
 
 export function HiddenField() {
   const app = useApp();

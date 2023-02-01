@@ -1,6 +1,6 @@
 import { useStateSubject } from "../../shared/hooks/observable-hooks";
-import { useApp } from "../App.context";
-import { routes } from "./Router.core";
+import { useApp } from "../AppContext";
+import { routes } from "./RouterCore";
 import { NotFound } from "./views/NotFound";
 
 interface Props {}

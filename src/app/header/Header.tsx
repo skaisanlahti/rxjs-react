@@ -1,7 +1,7 @@
 import { useStateSubject } from "../../shared/hooks/observable-hooks";
-import { useApp } from "../App.context";
-import { Route } from "../router/Router.core";
-import { NavItem, TopBar } from "./Header.styles";
+import { useApp } from "../AppContext";
+import { Route } from "../router/RouterCore";
+import { NavItem, TopBar } from "./HeaderStyles";
 
 export default function Header() {
   const app = useApp();

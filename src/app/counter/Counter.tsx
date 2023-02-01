@@ -1,6 +1,6 @@
 import { useStateSubject } from "../../shared/hooks/observable-hooks";
-import { useApp } from "../App.context";
-import { Button, Container, Title } from "../App.styles";
+import { useApp } from "../AppContext";
+import { Button, Container, Title } from "../AppStyles";
 
 export default function Counter() {
   const app = useApp();

@@ -1,6 +1,6 @@
 import { tap } from "rxjs";
-import { saveToStorage } from "../../shared/utils/storage";
-import RouterModule, { RouterModuleType } from "./Router.module";
+import { saveToStorage } from "../../shared/utils/storage-utils";
+import RouterModule, { RouterModuleType } from "./RouterModule";
 
 interface Dependencies {
   router: RouterModuleType;

@@ -1,6 +1,6 @@
 import { useStateSubject } from "../../../shared/hooks/observable-hooks";
-import { useApp } from "../../App.context";
-import { Button } from "../../App.styles";
+import { useApp } from "../../AppContext";
+import { Button } from "../../AppStyles";
 
 export function AddButton() {
   const app = useApp();

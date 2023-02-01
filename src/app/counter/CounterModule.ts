@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subject } from "rxjs";
 import genId from "../../shared/utils/genId";
-import { loadFromStorage } from "../../shared/utils/storage";
-import { Count } from "./Counter.core";
+import { loadFromStorage } from "../../shared/utils/storage-utils";
+import { Count } from "./CounterCore";
 
 export type CounterModuleType = ReturnType<typeof CounterModule>;
 

@@ -1,5 +1,5 @@
 import { combineLatest, filter, map, merge, tap } from "rxjs";
-import { TodoModuleType } from "./Todos.module";
+import { TodoModuleType } from "./TodosModule";
 
 interface Dependencies {
   todos: TodoModuleType;

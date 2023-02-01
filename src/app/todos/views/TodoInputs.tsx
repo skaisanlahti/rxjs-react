@@ -1,7 +1,7 @@
 import { useStateSubject } from "../../../shared/hooks/observable-hooks";
-import { useApp } from "../../App.context";
-import { Input } from "../../App.styles";
-import { HiddenField } from "../hidden-field/HiddenField.view";
+import { useApp } from "../../AppContext";
+import { Input } from "../../AppStyles";
+import { HiddenField } from "../hidden-field/HiddenField";
 
 export function TodoInputs() {
   const app = useApp();
