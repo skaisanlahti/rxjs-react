@@ -4,7 +4,7 @@ import { TodoCard } from "./TodoCard";
 
 export function TodoList() {
   const app = useApp();
-  const todos = useStateSubject(app.todos.items);
+  const { data: todos } = useStateSubject(app.todos.get);
 
   return (
     <>
