@@ -1,7 +1,7 @@
 import { filter, merge, tap } from "rxjs";
 import { Data } from "../../shared/utils/DataSubject";
-import { CounterModuleType } from "../counter/Counter.module";
-import { TodoModuleType } from "../todos/Todos.module";
+import { CounterModuleType } from "../counter/CounterModule";
+import { TodoModuleType } from "../todos/TodosModule";
 
 interface Dependencies {
   todos: TodoModuleType;

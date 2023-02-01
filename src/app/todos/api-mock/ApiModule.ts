@@ -1,8 +1,8 @@
 import { BehaviorSubject, Subject, map, timer } from "rxjs";
 import todosJson from "../../../shared/todos.json";
 import genId from "../../../shared/utils/genId";
-import { loadFromStorageToState } from "../../../shared/utils/storage";
-import { Todo } from "../Todos.core";
+import { loadFromStorageToState } from "../../../shared/utils/storage-utils";
+import { Todo } from "../TodosCore";
 
 export type ApiModuleType = ReturnType<typeof ApiModule>;
 

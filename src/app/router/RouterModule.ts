@@ -1,6 +1,6 @@
 import { BehaviorSubject, Subject } from "rxjs";
-import { loadFromStorageToState } from "../../shared/utils/storage";
-import { Route } from "./Router.core";
+import { loadFromStorageToState } from "../../shared/utils/storage-utils";
+import { Route } from "./RouterCore";
 
 export type RouterModuleType = ReturnType<typeof RouterModule>;
 

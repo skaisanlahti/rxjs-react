@@ -1,7 +1,10 @@
 import { map, merge, tap, withLatestFrom } from "rxjs";
-import { loadFromStorage, saveToStorage } from "../../shared/utils/storage";
-import { Count, decrement, increment, setCount } from "./Counter.core";
-import { CounterModuleType } from "./Counter.module";
+import {
+  loadFromStorage,
+  saveToStorage,
+} from "../../shared/utils/storage-utils";
+import { Count, decrement, increment, setCount } from "./CounterCore";
+import { CounterModuleType } from "./CounterModule";
 
 interface Dependencies {
   counter: CounterModuleType;

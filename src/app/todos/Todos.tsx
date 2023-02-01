@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useApp } from "../App.context";
-import { Container, Title } from "../App.styles";
+import { useApp } from "../AppContext";
+import { Container, Title } from "../AppStyles";
 import { AddButton } from "./views/AddButton";
 import { LoadButton } from "./views/LoadButton";
 import { TodoInputs } from "./views/TodoInputs";

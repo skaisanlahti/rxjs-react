@@ -1,5 +1,5 @@
 import { useStateSubject } from "../../../shared/hooks/observable-hooks";
-import { useApp } from "../../App.context";
+import { useApp } from "../../AppContext";
 import {
   Button,
   Card,
@@ -8,8 +8,8 @@ import {
   Part,
   TextPart,
   TodoHeading,
-} from "../../App.styles";
-import { Todo } from "../Todos.core";
+} from "../../AppStyles";
+import { Todo } from "../TodosCore";
 
 export function TodoCard({ item }: { item: Todo }) {
   const app = useApp();

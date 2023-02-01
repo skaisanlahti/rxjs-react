@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useApp } from "./App.context";
-import { Page } from "./App.styles";
-import Header from "./header/Header.view";
-import Router from "./router/Router.view";
+import { useApp } from "./AppContext";
+import { Page } from "./AppStyles";
+import Header from "./header/Header";
+import Router from "./router/Router";
 
 export default function App() {
   const app = useApp();

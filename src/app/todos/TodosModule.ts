@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { DataSubject } from "../../shared/utils/DataSubject";
-import ApiModule, { ApiModuleType } from "./api-mock/Api.module";
+import ApiModule, { ApiModuleType } from "./api-mock/ApiModule";
 
 export type TodoModuleType = ReturnType<typeof TodoModule>;
 
