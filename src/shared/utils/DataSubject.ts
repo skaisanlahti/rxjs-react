@@ -1,4 +1,13 @@
-import { BehaviorSubject, Observable, catchError, tap } from "rxjs";
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  Subscription,
+  catchError,
+  of,
+  switchMap,
+  tap,
+} from "rxjs";
 
 export type Status = "idle" | "loading" | "success" | "error";
 
@@ -12,28 +21,41 @@ export type Data<Result, Error = any> = {
 };
 
 const initialState = {
-  status: "idle",
+  status: "idle" as Status,
   isLoading: false,
   isSuccess: false,
   isError: false,
-} as const;
+};
 
-export class DataSubject<T, P> extends BehaviorSubject<Data<T>> {
-  send: (params: P) => Observable<T>;
+export class DataSubject<T, P = void> extends BehaviorSubject<Data<T>> {
+  private dispatch: Subject<P>;
+  private subscription: Subscription;
 
   constructor(request: (params: P) => Observable<T>) {
     super(initialState);
-
-    this.send = (params: P) => {
-      this.loading();
-      return request(params).pipe(
-        tap((res) => this.success(res)),
-        catchError((error, res) => {
+    this.dispatch = new Subject<P>();
+    this.subscription = this.dispatch
+      .pipe(
+        tap(() => {
+          console.log(`${request.name} request`);
+          this.loading();
+        }),
+        switchMap(request),
+        tap((response) => {
+          console.log(`${request.name} success`);
+          this.success(response);
+        }),
+        catchError((error) => {
           this.error(error);
-          return res;
+          console.error(error);
+          return of(error);
         })
-      );
-    };
+      )
+      .subscribe();
+  }
+
+  send(params: P) {
+    this.dispatch.next(params);
   }
 
   success(data: T) {
@@ -78,5 +100,10 @@ export class DataSubject<T, P> extends BehaviorSubject<Data<T>> {
       isError: false,
       isLoading: false,
     });
+  }
+
+  dispose() {
+    this.dispatch.complete();
+    this.subscription.unsubscribe();
   }
 }

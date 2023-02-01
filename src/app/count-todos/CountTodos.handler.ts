@@ -9,17 +9,17 @@ interface Dependencies {
 }
 export default function CountTodosHandler({ counter, todos }: Dependencies) {
   return function start() {
-    const onAddOk = todos.addRequest.pipe(
+    const onAddOk = todos.add.pipe(
       filter(ok),
       tap(() => counter.increment.next())
     );
 
-    const onRemoveOk = todos.removeRequest.pipe(
+    const onRemoveOk = todos.remove.pipe(
       filter(ok),
       tap(() => counter.decrement.next())
     );
 
-    const onResetOk = todos.resetRequest.pipe(
+    const onResetOk = todos.reset.pipe(
       filter(ok),
       tap(() => counter.reset.next())
     );
