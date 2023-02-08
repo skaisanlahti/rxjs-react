@@ -91,19 +91,4 @@ export class DataSubject<T, P = void> extends BehaviorSubject<Data<T>> {
       isLoading: true,
     });
   }
-
-  // cancel() {
-  //   this.next({
-  //     ...this.getValue(),
-  //     status: "idle",
-  //     isSuccess: false,
-  //     isError: false,
-  //     isLoading: false,
-  //   });
-  // }
-
-  // dispose() {
-  //   this.dispatch.complete();
-  //   this.subscription.unsubscribe();
-  // }
 }
