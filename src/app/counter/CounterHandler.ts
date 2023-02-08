@@ -28,7 +28,7 @@ export default function CounterHandler({ counter }: Dependencies) {
     const onReset = counter.reset.pipe(
       tap(() => log("reset count")),
       withLatestFrom(counter.count),
-      map(([_, count]) => setCount(count, 0))
+      map(([_, count]) => setCount(count, 3))
     );
 
     // state and storage update
@@ -41,7 +41,6 @@ export default function CounterHandler({ counter }: Dependencies) {
       map((count) => saveToStorage("count", count))
     );
 
-    // init
     const onLoad = counter.loadCount.pipe(
       map(() => loadFromStorage<Count>("count")),
       tap((count) => {
