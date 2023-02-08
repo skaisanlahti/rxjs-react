@@ -2,10 +2,10 @@ import {
   BehaviorSubject,
   Observable,
   Subject,
-  Subscription,
   catchError,
   of,
   switchMap,
+  takeUntil,
   tap,
 } from "rxjs";
 
@@ -28,14 +28,17 @@ const initialState = {
 };
 
 export class DataSubject<T, P = void> extends BehaviorSubject<Data<T>> {
-  private dispatch: Subject<P>;
-  private subscription: Subscription;
+  private cancel: Subject<void> = new Subject();
+  send: (params: P) => Observable<Data<T>>;
 
   constructor(request: (params: P) => Observable<T>) {
     super(initialState);
-    this.dispatch = new Subject<P>();
-    this.subscription = this.dispatch
-      .pipe(
+
+    this.send = (params: P) => {
+      if (this.getValue().isLoading) {
+        this.cancel.next();
+      }
+      return of(params).pipe(
         tap(() => {
           console.log(`${request.name} request`);
           this.loading();
@@ -49,13 +52,10 @@ export class DataSubject<T, P = void> extends BehaviorSubject<Data<T>> {
           this.error(error);
           console.error(error);
           return of(error);
-        })
-      )
-      .subscribe();
-  }
-
-  send(params: P) {
-    this.dispatch.next(params);
+        }),
+        takeUntil(this.cancel)
+      );
+    };
   }
 
   success(data: T) {
@@ -90,20 +90,5 @@ export class DataSubject<T, P = void> extends BehaviorSubject<Data<T>> {
       isError: false,
       isLoading: true,
     });
-  }
-
-  cancel() {
-    this.next({
-      ...this.getValue(),
-      status: "idle",
-      isSuccess: false,
-      isError: false,
-      isLoading: false,
-    });
-  }
-
-  dispose() {
-    this.dispatch.complete();
-    this.subscription.unsubscribe();
   }
 }

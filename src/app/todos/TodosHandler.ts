@@ -1,4 +1,4 @@
-import { combineLatest, filter, map, merge, tap } from "rxjs";
+import { combineLatest, filter, map, merge, switchMap, tap } from "rxjs";
 import { TodoModuleType } from "./TodosModule";
 
 interface Dependencies {
@@ -15,7 +15,7 @@ export default function TodoHandler({ todos }: Dependencies) {
       todos.reset
     ).pipe(
       filter(({ data, isSuccess }) => isSuccess === true && data !== undefined),
-      tap(() => todos.get.send())
+      switchMap(() => todos.get.send())
     );
 
     // handle loading indicator

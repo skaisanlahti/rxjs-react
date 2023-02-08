@@ -20,7 +20,7 @@ export function TodoCard({ item }: { item: Todo }) {
     <Card
       onClick={() => {
         if (!isChecking) {
-          app.todos.check.send({ id: item.id });
+          app.todos.check.send({ id: item.id }).subscribe();
         }
       }}
     >
@@ -44,7 +44,7 @@ export function TodoCard({ item }: { item: Todo }) {
           disabled={isDeleting}
           onClick={(e) => {
             e.stopPropagation();
-            app.todos.remove.send({ id: item.id });
+            app.todos.remove.send({ id: item.id }).subscribe();
           }}
         >
           Remove

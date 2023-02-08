@@ -10,7 +10,7 @@ export function LoadButton() {
     <Button
       disabled={todosLoading}
       onClick={() => {
-        app.todos.reset.send();
+        app.todos.reset.send().subscribe();
       }}
     >
       Load
