@@ -11,7 +11,7 @@ export default function Todos() {
 
   useEffect(() => {
     app.todos.get.send().subscribe();
-    const disableToggle = app.enableToggle();
+    const disableToggle = app.startHiddenFieldEvents();
     return () => disableToggle();
   }, []);
 

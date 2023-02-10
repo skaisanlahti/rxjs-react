@@ -19,9 +19,8 @@ export function TodoCard({ item }: { item: Todo }) {
   return (
     <Card
       onClick={() => {
-        if (!isChecking) {
-          app.todos.check.send({ id: item.id }).subscribe();
-        }
+        if (isChecking) return;
+        app.todos.check.send({ id: item.id }).subscribe();
       }}
     >
       <Check>

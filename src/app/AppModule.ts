@@ -19,7 +19,7 @@ export default function AppModule() {
   const todos = TodoModule({ api });
   const hidden = HiddenFieldModule();
 
-  const enableToggle = HiddenFieldHandler({ hidden, todos, api });
+  const startHiddenFieldEvents = HiddenFieldHandler({ hidden, todos, api });
 
   const start = createGroupStarter([
     RouterHandler({ router }),
@@ -35,6 +35,6 @@ export default function AppModule() {
     todos,
     hidden,
     api,
-    enableToggle,
+    startHiddenFieldEvents,
   };
 }

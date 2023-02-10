@@ -9,22 +9,26 @@ interface Dependencies {
 }
 export default function CountTodosHandler({ counter, todos }: Dependencies) {
   return function start() {
-    const onAddOk = todos.add.pipe(
+    const incrementCountOnTodoAdd = todos.add.pipe(
       filter(ok),
       tap(() => counter.increment.next())
     );
 
-    const onRemoveOk = todos.remove.pipe(
+    const decrementCountOnTodoRemove = todos.remove.pipe(
       filter(ok),
       tap(() => counter.decrement.next())
     );
 
-    const onResetOk = todos.reset.pipe(
+    const resetCountOnTodoReset = todos.reset.pipe(
       filter(ok),
       tap(() => counter.reset.next())
     );
 
-    const subscription = merge(onAddOk, onRemoveOk, onResetOk).subscribe();
+    const subscription = merge(
+      incrementCountOnTodoAdd,
+      decrementCountOnTodoRemove,
+      resetCountOnTodoReset
+    ).subscribe();
 
     return () => {
       subscription.unsubscribe();

@@ -1,4 +1,12 @@
-import { combineLatest, filter, map, merge, switchMap, tap } from "rxjs";
+import {
+  combineLatest,
+  distinctUntilChanged,
+  filter,
+  map,
+  merge,
+  switchMap,
+  tap,
+} from "rxjs";
 import { TodoModuleType } from "./TodosModule";
 
 interface Dependencies {
@@ -7,8 +15,7 @@ interface Dependencies {
 
 export default function TodoHandler({ todos }: Dependencies) {
   return function start() {
-    // handle refetching todos after actions
-    const onActions = merge(
+    const refetchTodosAfterMutations = merge(
       todos.add,
       todos.check,
       todos.remove,
@@ -19,7 +26,7 @@ export default function TodoHandler({ todos }: Dependencies) {
     );
 
     // handle loading indicator
-    const onLoading = combineLatest([
+    const requestsLoading = combineLatest([
       todos.get,
       todos.add,
       todos.check,
@@ -27,11 +34,24 @@ export default function TodoHandler({ todos }: Dependencies) {
       todos.reset,
     ]).pipe(
       map((values) => values.some(({ isLoading }) => isLoading === true)),
+      distinctUntilChanged(),
       tap((value) => todos.todosLoading.next(value))
     );
 
-    // merge all streams and start
-    const subscription = merge(onActions, onLoading).subscribe();
+    const clearFieldsOnAdd = todos.add.pipe(
+      filter(({ data, isSuccess }) => isSuccess === true && data !== undefined),
+      tap(() => {
+        todos.title.next("");
+        todos.description.next("");
+      })
+    );
+
+    // merge all streams and start listening with subscribe
+    const subscription = merge(
+      refetchTodosAfterMutations,
+      requestsLoading,
+      clearFieldsOnAdd
+    ).subscribe();
 
     return () => {
       subscription.unsubscribe();
