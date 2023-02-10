@@ -14,41 +14,47 @@ export default function CounterHandler({ counter }: Dependencies) {
   return function start() {
     const { log } = console;
 
-    // transformations
-    const onInc = counter.increment.pipe(
+    const countAfterIncrement = counter.increment.pipe(
       tap(() => log("increment count")),
       withLatestFrom(counter.count),
       map(([input, count]) => increment(count, input))
     );
-    const onDec = counter.decrement.pipe(
+    const countAfterDecrement = counter.decrement.pipe(
       tap(() => log("decrement count")),
       withLatestFrom(counter.count),
       map(([input, count]) => decrement(count, input))
     );
-    const onReset = counter.reset.pipe(
+    const countAfterReset = counter.reset.pipe(
       tap(() => log("reset count")),
       withLatestFrom(counter.count),
       map(([_, count]) => setCount(count, 3))
     );
 
-    // state and storage update
-    const onActions = merge(onInc, onDec, onReset).pipe(
+    const updateStateAndStorage = merge(
+      countAfterIncrement,
+      countAfterDecrement,
+      countAfterReset
+    ).pipe(
       tap((count) => counter.count.next(count)),
       tap((count) => counter.saveCount.next(count))
     );
 
-    const onSave = counter.saveCount.pipe(
+    const handleSaveEvent = counter.saveCount.pipe(
       map((count) => saveToStorage("count", count))
     );
 
-    const onLoad = counter.loadCount.pipe(
+    const handleLoadEvent = counter.loadCount.pipe(
       map(() => loadFromStorage<Count>("count")),
       tap((count) => {
         if (count !== null) counter.count.next(count);
       })
     );
 
-    const subscription = merge(onActions, onLoad, onSave).subscribe();
+    const subscription = merge(
+      updateStateAndStorage,
+      handleLoadEvent,
+      handleSaveEvent
+    ).subscribe();
 
     return () => {
       subscription.unsubscribe();
