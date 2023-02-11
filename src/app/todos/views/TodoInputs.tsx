@@ -1,13 +1,13 @@
-import { useStateSubject } from "../../../shared/hooks/observable-hooks";
+import { useSubscribe } from "../../../shared/hooks/observable-hooks";
 import { useApp } from "../../AppContext";
 import { Input } from "../../AppStyles";
 import { HiddenField } from "../hidden-field/HiddenField";
 
 export function TodoInputs() {
   const app = useApp();
-  const title = useStateSubject(app.todos.title);
-  const description = useStateSubject(app.todos.description);
-  const isDelayFieldHidden = useStateSubject(app.hidden.isDelayFieldHidden);
+  const title = useSubscribe(app.todos.title);
+  const description = useSubscribe(app.todos.description);
+  const isDelayFieldHidden = useSubscribe(app.hidden.isDelayFieldHidden);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useStateSubject } from "../../../shared/hooks/observable-hooks";
+import { useSubscribe } from "../../../shared/hooks/observable-hooks";
 import { useApp } from "../../AppContext";
 import {
   Button,
@@ -13,8 +13,8 @@ import { Todo } from "../TodosCore";
 
 export function TodoCard({ item }: { item: Todo }) {
   const app = useApp();
-  const isDeleting = useStateSubject(app.todos.remove, (s) => s.isLoading);
-  const isChecking = useStateSubject(app.todos.check, (s) => s.isLoading);
+  const isDeleting = useSubscribe(app.todos.remove, (s) => s.isLoading);
+  const isChecking = useSubscribe(app.todos.check, (s) => s.isLoading);
 
   return (
     <Card

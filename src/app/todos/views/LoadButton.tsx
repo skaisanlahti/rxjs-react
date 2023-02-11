@@ -1,10 +1,10 @@
-import { useStateSubject } from "../../../shared/hooks/observable-hooks";
+import { useSubscribe } from "../../../shared/hooks/observable-hooks";
 import { useApp } from "../../AppContext";
 import { Button } from "../../AppStyles";
 
 export function LoadButton() {
   const app = useApp();
-  const todosLoading = useStateSubject(app.todos.todosLoading);
+  const todosLoading = useSubscribe(app.todos.todosLoading);
 
   return (
     <Button
