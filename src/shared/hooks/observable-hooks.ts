@@ -1,4 +1,4 @@
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useLayoutEffect, useState, useSyncExternalStore } from "react";
 import {
   BehaviorSubject,
   Subscription,
@@ -20,7 +20,7 @@ export function useStateSubject<T, K>(
   const [state, setState] = useState(
     selector ? selector(subject.getValue()) : subject.getValue()
   );
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (selector) {
       const initialValue = subject.getValue();
       const mappedValue = selector(initialValue);

@@ -13,7 +13,7 @@ export function AddButton() {
       <Button
         disabled={isProcessing}
         onClick={() => {
-          app.todos.add.send({ title, description });
+          app.todos.add.send({ title, description }).subscribe();
         }}
       >
         Add todo
