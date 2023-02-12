@@ -9,33 +9,16 @@ import {
   tap,
 } from "rxjs";
 
-export type Status = "idle" | "loading" | "success" | "error";
-
-export type Data<Result, Error = any> = {
-  data?: Result;
-  error?: Error;
-  status: Status;
-  isLoading: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-};
-
-const initialState = {
-  status: "idle" as Status,
-  isLoading: false,
-  isSuccess: false,
-  isError: false,
-};
-
-export class DataSubject<T, P = void> extends BehaviorSubject<T | null> {
+export class RequestStream<T, P = void> {
   private cancel: Subject<void> = new Subject();
   send: (params: P) => Observable<T>;
+  data: BehaviorSubject<T | null>;
   isLoading: BehaviorSubject<boolean>;
   isSuccess: BehaviorSubject<boolean>;
   isError: BehaviorSubject<boolean>;
 
   constructor(request: (params: P) => Observable<T>) {
-    super(null);
+    this.data = new BehaviorSubject<T | null>(null);
     this.isSuccess = new BehaviorSubject(false);
     this.isLoading = new BehaviorSubject(false);
     this.isError = new BehaviorSubject(false);
@@ -53,7 +36,7 @@ export class DataSubject<T, P = void> extends BehaviorSubject<T | null> {
         }),
         switchMap(request),
         tap((response) => {
-          this.next(response);
+          this.data.next(response);
           this.isLoading.next(false);
           this.isSuccess.next(true);
           this.isError.next(false);
