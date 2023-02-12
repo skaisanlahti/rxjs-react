@@ -9,10 +9,10 @@ import {
 import todosJson from "../../shared/todos.json";
 import genId from "../../shared/utils/genId";
 
+//#region Pure
+
 const todosFromFile = todosJson;
 const initialTodos = todosFromFile.todos as Todos;
-
-//#region Types
 
 export type ID = `${string}-${string}-${string}-${string}-${string}`;
 
@@ -27,10 +27,6 @@ export type Todo = NewTodo & {
 };
 
 export type Todos = Todo[];
-
-//#endregion Types
-
-//#region Pure Functions
 
 function create(title: string, description: string): Todo {
   return { id: genId(), title, description, isDone: false };
@@ -65,13 +61,13 @@ export const todosLibrary = {
   check,
 };
 
-//#endregion Pure Functions
+//#endregion Pure
 
 //#region Streams
 
-export function buildTodosStreams() {
+export function buildTodoStreams() {
   return {
-    todos: new BehaviorSubject<Todos>([]),
+    todos: new BehaviorSubject<Todos>(initialTodos),
     title: new BehaviorSubject(""),
     description: new BehaviorSubject(""),
     updateTitle: new Subject<string>(),
@@ -83,7 +79,7 @@ export function buildTodosStreams() {
   };
 }
 
-export type TodoStreams = ReturnType<typeof buildTodosStreams>;
+export type TodoStreams = ReturnType<typeof buildTodoStreams>;
 
 function buildAddTodoHandler(
   addTodo: Subject<void>,
@@ -92,6 +88,7 @@ function buildAddTodoHandler(
   description: BehaviorSubject<string>
 ) {
   return addTodo.pipe(
+    tap(() => console.log("add todo")),
     withLatestFrom(title, description),
     map(([, currentTitle, currentDescription]) =>
       todosLibrary.create(currentTitle, currentDescription)
@@ -109,6 +106,7 @@ function buildRemoveTodoHandler(
   todos: BehaviorSubject<Todos>
 ) {
   return removeTodo.pipe(
+    tap(() => console.log("remove todo")),
     withLatestFrom(todos),
     map(([id, currentTodos]) => todosLibrary.remove(currentTodos, id)),
     tap((newTodos) => todos.next(newTodos))
@@ -120,6 +118,7 @@ function buildCheckTodoHandler(
   todos: BehaviorSubject<Todos>
 ) {
   return checkTodo.pipe(
+    tap(() => console.log("check todo")),
     withLatestFrom(todos),
     map(([id, currentTodos]) => todosLibrary.check(currentTodos, id)),
     tap((newTodos) => todos.next(newTodos))
@@ -130,7 +129,10 @@ function buildResetTodosHandler(
   resetTodos: Subject<void>,
   todos: BehaviorSubject<Todos>
 ) {
-  return resetTodos.pipe(tap(() => todos.next(initialTodos)));
+  return resetTodos.pipe(
+    tap(() => console.log("reset todos")),
+    tap(() => todos.next(initialTodos))
+  );
 }
 
 export function buildTodosHandler(streams: TodoStreams) {
@@ -147,7 +149,7 @@ export function buildTodosHandler(streams: TodoStreams) {
   );
 }
 
-export type ITodosHandler = ReturnType<typeof buildTodosHandler>;
+export type TodosHandler = ReturnType<typeof buildTodosHandler>;
 
 //#endregion Streams
 
@@ -179,12 +181,12 @@ export function buildTodosFacade(streams: TodoStreams) {
   };
 }
 
-export type ITodosFacade = ReturnType<typeof buildTodosFacade>;
+export type TodosFacade = ReturnType<typeof buildTodosFacade>;
 
 //#endregion Facade
 
 export function buildTodos() {
-  const todoStreams = buildTodosStreams();
+  const todoStreams = buildTodoStreams();
   return {
     todoStreams,
     todosFacade: buildTodosFacade(todoStreams),

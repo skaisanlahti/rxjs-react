@@ -1,4 +1,3 @@
-import { useApp } from "../../AppContext";
 import {
   Button,
   Card,
@@ -8,7 +7,8 @@ import {
   TextPart,
   TodoHeading,
 } from "../../AppStyles";
-import { Todo } from "../TodosFeature";
+import { useApp } from "../../build-application";
+import { Todo } from "../todos-feature";
 
 export function TodoCard({ item }: { item: Todo }) {
   const { todos } = useApp();

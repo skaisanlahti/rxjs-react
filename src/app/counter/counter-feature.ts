@@ -11,33 +11,46 @@ import {
   loadFromStorage,
   saveToStorage,
 } from "../../shared/utils/storage-utils";
+import { ID } from "../todos/todos-feature";
+
+//#region Pure
 
 export interface Count {
-  id?: string;
+  id?: ID;
   value: number;
 }
 
-export function increment(count: Count, input: number | void): Count {
+function increment(count: Count, input: number | void): Count {
   const newCount = { ...count };
   if (!input) newCount.value = newCount.value + 1;
   else newCount.value = newCount.value + input;
   return newCount;
 }
 
-export function decrement(count: Count, input: number | void): Count {
+function decrement(count: Count, input: number | void): Count {
   const newCount = { ...count };
   if (!input) newCount.value = newCount.value - 1;
   else newCount.value = newCount.value - input;
   return newCount;
 }
 
-export function setCount(count: Count, input: number): Count {
+function setCount(count: Count, input: number): Count {
   const newCount = { ...count };
   newCount.value = input;
   return newCount;
 }
 
-export function CounterStreams() {
+export const counterLibrary = {
+  increment,
+  decrement,
+  setCount,
+};
+
+//#endregion Pure
+
+//#region Streams
+
+export function buildCounterStreams() {
   return {
     count: new BehaviorSubject<Count>(
       loadFromStorage("count") ?? { id: genId(), value: 0 }
@@ -50,9 +63,9 @@ export function CounterStreams() {
   };
 }
 
-export type ICounterStreams = ReturnType<typeof CounterStreams>;
+export type CounterStreams = ReturnType<typeof buildCounterStreams>;
 
-export function CounterHandler(counter: ICounterStreams) {
+export function buildCounterHandler(counter: CounterStreams) {
   const { log } = console;
 
   const countAfterIncrement = counter.increment.pipe(
@@ -94,9 +107,13 @@ export function CounterHandler(counter: ICounterStreams) {
   return merge(updateStateAndStorage, handleLoadEvent, handleSaveEvent);
 }
 
-export type ICounterHandler = ReturnType<typeof CounterHandler>;
+export type CounterHandler = ReturnType<typeof buildCounterHandler>;
 
-export function CounterFacade(streams: ICounterStreams) {
+//#endregion Streams
+
+//#region Facade
+
+export function buildCounterFacade(streams: CounterStreams) {
   return {
     count: streams.count.pipe(map((c) => c.value)),
     double: streams.count.pipe(map((c) => c.value * 2)),
@@ -105,11 +122,13 @@ export function CounterFacade(streams: ICounterStreams) {
   };
 }
 
+//#endregion Facade
+
 export function buildCounter() {
-  const counterStreams = CounterStreams();
+  const counterStreams = buildCounterStreams();
   return {
     counterStreams,
-    counterFacade: CounterFacade(counterStreams),
-    counterHandler: CounterHandler(counterStreams),
+    counterFacade: buildCounterFacade(counterStreams),
+    counterHandler: buildCounterHandler(counterStreams),
   };
 }

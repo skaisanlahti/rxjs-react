@@ -1,5 +1,5 @@
 import { useStream } from "../../../shared/hooks/observable-hooks";
-import { useApp } from "../../AppContext";
+import { useApp } from "../../build-application";
 import { TodoCard } from "./TodoCard";
 
 export function TodoList() {

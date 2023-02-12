@@ -1,6 +1,6 @@
-import { useApp } from "../../AppContext";
 import { Button, Container, Title } from "../../AppStyles";
-import { Route } from "../RouterFeature";
+import { useApp } from "../../build-application";
+import { Route } from "../router-feature";
 
 export function NotFound() {
   const { router } = useApp();

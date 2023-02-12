@@ -1,11 +1,19 @@
 import { useStream } from "../../shared/hooks/observable-hooks";
-import { useApp } from "../AppContext";
 import { Button, Container, Title } from "../AppStyles";
+import { useApp } from "../build-application";
 
 export default function Counter() {
   const { counter } = useApp();
   const value = useStream(counter.count, 0);
   const double = useStream(counter.double, 0);
+
+  function handleIncrement() {
+    counter.inc();
+  }
+
+  function handleDecrement() {
+    counter.dec();
+  }
 
   return (
     <Container>
@@ -13,14 +21,8 @@ export default function Counter() {
       <p>Count: {value}</p>
       <p>Double: {double}</p>
       <div>
-        <Button
-          onClick={() => {
-            counter.inc();
-          }}
-        >
-          +
-        </Button>
-        <Button onClick={() => counter.dec()}>-</Button>
+        <Button onClick={handleIncrement}>+</Button>
+        <Button onClick={handleDecrement}>-</Button>
       </div>
     </Container>
   );

@@ -1,6 +1,6 @@
 import { useStream } from "../../../shared/hooks/observable-hooks";
-import { useApp } from "../../AppContext";
 import { Input } from "../../AppStyles";
+import { useApp } from "../../build-application";
 
 export function TodoInputs() {
   const { todos } = useApp();

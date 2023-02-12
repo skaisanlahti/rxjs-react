@@ -19,23 +19,27 @@ routes.set(Route.Home, Home);
 routes.set(Route.Counter, Counter);
 routes.set(Route.Todos, Todos);
 
-export type IRouterStreams = ReturnType<typeof RouterStreams>;
+export function getInitialRoute(): Route {
+  return loadFromStorage("route") ?? Route.Home;
+}
 
-export function RouterStreams() {
+export type RouterStreams = ReturnType<typeof buildRouterStreams>;
+
+export function buildRouterStreams() {
   return {
-    route: new BehaviorSubject<Route>(loadFromStorage("route") ?? Route.Home),
+    route: new BehaviorSubject<Route>(getInitialRoute()),
     changeRoute: new Subject<Route>(),
   };
 }
 
-function ChangeRouteHandler(
+function buildChangeRouteHandler(
   changeRoute: Subject<Route>,
   route: BehaviorSubject<Route>
 ) {
   return changeRoute.pipe(tap((nextRoute) => route.next(nextRoute)));
 }
 
-function RouteHandler(route: BehaviorSubject<Route>) {
+function buildRouteHandler(route: BehaviorSubject<Route>) {
   return route.pipe(
     tap((currentRoute) => {
       saveToStorage("route", currentRoute);
@@ -43,16 +47,16 @@ function RouteHandler(route: BehaviorSubject<Route>) {
   );
 }
 
-export function RouterHandler(streams: IRouterStreams) {
+export function buildRouterHandler(streams: RouterStreams) {
   return merge(
-    ChangeRouteHandler(streams.changeRoute, streams.route),
-    RouteHandler(streams.route)
+    buildChangeRouteHandler(streams.changeRoute, streams.route),
+    buildRouteHandler(streams.route)
   );
 }
 
-export type IRouterHandler = ReturnType<typeof RouterHandler>;
+export type RouterHandler = ReturnType<typeof buildRouterHandler>;
 
-export function RouterFacade(streams: IRouterStreams) {
+export function buildRouterFacade(streams: RouterStreams) {
   return {
     route: streams.route.asObservable(),
     goTo: (route: Route) => {
@@ -62,10 +66,10 @@ export function RouterFacade(streams: IRouterStreams) {
 }
 
 export function buildRouter() {
-  const routerStreams = RouterStreams();
+  const routerStreams = buildRouterStreams();
   return {
     routerStreams,
-    routerFacade: RouterFacade(routerStreams),
-    routerHandler: RouterHandler(routerStreams),
+    routerFacade: buildRouterFacade(routerStreams),
+    routerHandler: buildRouterHandler(routerStreams),
   };
 }

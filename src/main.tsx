@@ -2,9 +2,8 @@ import { Global, ThemeProvider } from "@emotion/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app/App";
-import { AppProvider } from "./app/AppContext";
-import { buildApplication } from "./app/AppModule";
 import { theme } from "./app/AppStyles";
+import { AppProvider, buildApplication } from "./app/build-application";
 import "./shared/reset.css";
 
 const app = buildApplication();

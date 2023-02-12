@@ -1,12 +1,11 @@
 import { useStream } from "../../shared/hooks/observable-hooks";
-import { loadFromStorage } from "../../shared/utils/storage-utils";
-import { useApp } from "../AppContext";
-import { Route } from "../router/RouterFeature";
+import { useApp } from "../build-application";
+import { Route, getInitialRoute } from "../router/router-feature";
 import { NavItem, TopBar } from "./HeaderStyles";
 
 export default function Header() {
   const { router } = useApp();
-  const route = useStream(router.route, loadFromStorage("route") ?? Route.Home);
+  const route = useStream(router.route, getInitialRoute());
 
   return (
     <TopBar>

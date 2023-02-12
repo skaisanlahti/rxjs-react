@@ -123,14 +123,7 @@ export function select<T, K>(
   return [innerSubject, innerSubscription, cleanUp] as const;
 }
 
+// library hook name too long so renaming
 export function useStream<T>(stream: Observable<T>, init: T) {
   return useLayoutObservableState(stream, init);
-  // const [state, setState] = useState(init);
-  // useLayoutEffect(() => {
-  //   const s = stream.subscribe(setState);
-  //   return () => {
-  //     s.unsubscribe();
-  //   };
-  // }, [stream]);
-  // return state;
 }

@@ -1,6 +1,6 @@
-import { useApp } from "../AppContext";
 import { Button, Container, Title } from "../AppStyles";
-import { Route } from "../router/RouterFeature";
+import { useApp } from "../build-application";
+import { Route } from "../router/router-feature";
 
 export default function Home() {
   const { router } = useApp();
