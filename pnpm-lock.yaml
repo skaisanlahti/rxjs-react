@@ -8,6 +8,7 @@ specifiers:
   '@vitejs/plugin-react': ^2.1.0
   axios: ^1.2.1
   immer: ^9.0.19
+  observable-hooks: ^4.2.1
   react: ^18.2.0
   react-dom: ^18.2.0
   rxjs: ^7.5.7
@@ -20,6 +21,7 @@ dependencies:
   '@emotion/styled': 11.10.5_avbifwq3am6trntrguk62pydsi
   axios: 1.2.1
   immer: 9.0.19
+  observable-hooks: 4.2.1_eg6o7gurzkmlt7b63gbvziog74
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   rxjs: 7.5.7
@@ -1015,6 +1017,18 @@ packages:
   /node-releases/2.0.6:
     resolution: {integrity: sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==}
     dev: true
+
+  /observable-hooks/4.2.1_eg6o7gurzkmlt7b63gbvziog74:
+    resolution: {integrity: sha512-urZ0D28+oH+SRLQoCDd68rvvJIqK3zgH/Is0nubXDc+CF6d8rbDBN7A2n9mPAax7BtCRlwtnCBnkj8UwXRDf1Q==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+      rxjs: '>=6.0.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      rxjs: 7.5.7
+    dev: false
 
   /parent-module/1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}

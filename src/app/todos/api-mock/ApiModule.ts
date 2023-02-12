@@ -1,13 +1,12 @@
 import { BehaviorSubject, Subject, map, timer } from "rxjs";
 import todosJson from "../../../shared/todos.json";
-import genId from "../../../shared/utils/genId";
 import { loadFromStorageToState } from "../../../shared/utils/storage-utils";
-import { Todo } from "../TodosCore";
+import { ID, NewTodo, Todos, todosLibrary } from "../TodosFeature";
 
 export type ApiModuleType = ReturnType<typeof ApiModule>;
 
 export default function ApiModule() {
-  let todos = todosJson.todos as Todo[];
+  let todos = todosJson.todos as Todos;
   const mockDelay = new BehaviorSubject(500);
   const updateDelay = new Subject<number>();
 
@@ -16,7 +15,7 @@ export default function ApiModule() {
   function resetTodos() {
     return timer(mockDelay.getValue()).pipe(
       map(() => {
-        todos = todosJson.todos as Todo[];
+        todos = todosJson.todos as Todos;
         return true;
       })
     );
@@ -25,47 +24,34 @@ export default function ApiModule() {
   function getTodos() {
     return timer(mockDelay.getValue()).pipe(
       map(() => {
-        return [...todos];
+        return [...todos] as Todos;
       })
     );
   }
 
-  function addTodo({
-    title,
-    description,
-  }: {
-    title: string;
-    description: string;
-  }) {
-    const newTodo = { id: genId(), title, description, done: false };
+  function addTodo({ title, description }: NewTodo) {
+    const newTodo = todosLibrary.create(title, description);
     return timer(mockDelay.getValue()).pipe(
       map(() => {
-        todos = todos.concat(newTodo);
+        todos = todosLibrary.add(todos, newTodo);
         return true;
       })
     );
   }
 
-  function deleteTodo({ id }: { id: string }) {
+  function deleteTodo({ id }: { id: ID }) {
     return timer(mockDelay.getValue()).pipe(
       map(() => {
-        todos = todos.filter((todo) => todo.id !== id);
+        todos = todosLibrary.remove(todos, id);
         return true;
       })
     );
   }
 
-  function checkTodo({ id }: { id: string }) {
+  function checkTodo({ id }: { id: ID }) {
     return timer(mockDelay.getValue()).pipe(
       map(() => {
-        todos = todos.map((todo) => {
-          if (todo.id === id) {
-            const newTodo = { ...todo };
-            newTodo.done = !newTodo.done;
-            return newTodo;
-          }
-          return todo;
-        });
+        todos = todosLibrary.check(todos, id);
         return true;
       })
     );

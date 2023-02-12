@@ -1,16 +1,14 @@
 import { useApp } from "../../AppContext";
 import { Button, Container, Title } from "../../AppStyles";
-import { Route } from "../RouterCore";
+import { Route } from "../RouterFeature";
 
 export function NotFound() {
-  const app = useApp();
+  const { router } = useApp();
   return (
     <Container>
       <Title>Not found</Title>
       <p>Route was not found.</p>
-      <Button onClick={() => app.router.changeRoute.next(Route.Home)}>
-        Go to home
-      </Button>
+      <Button onClick={() => router.goTo(Route.Home)}>Go to home</Button>
     </Container>
   );
 }

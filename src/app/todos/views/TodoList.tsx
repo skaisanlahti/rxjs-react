@@ -1,14 +1,14 @@
-import { useSubscribe } from "../../../shared/hooks/observable-hooks";
+import { useStream } from "../../../shared/hooks/observable-hooks";
 import { useApp } from "../../AppContext";
 import { TodoCard } from "./TodoCard";
 
 export function TodoList() {
-  const app = useApp();
-  const { data: todos } = useSubscribe(app.todos.get);
+  const { todos } = useApp();
+  const items = useStream(todos.items, []);
 
   return (
     <>
-      {todos?.map((item) => (
+      {items.map((item) => (
         <TodoCard key={item.id} item={item} />
       ))}
     </>

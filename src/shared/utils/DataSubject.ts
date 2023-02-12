@@ -27,68 +27,47 @@ const initialState = {
   isError: false,
 };
 
-export class DataSubject<T, P = void> extends BehaviorSubject<Data<T>> {
+export class DataSubject<T, P = void> extends BehaviorSubject<T | null> {
   private cancel: Subject<void> = new Subject();
-  send: (params: P) => Observable<Data<T>>;
+  send: (params: P) => Observable<T>;
+  isLoading: BehaviorSubject<boolean>;
+  isSuccess: BehaviorSubject<boolean>;
+  isError: BehaviorSubject<boolean>;
 
   constructor(request: (params: P) => Observable<T>) {
-    super(initialState);
+    super(null);
+    this.isSuccess = new BehaviorSubject(false);
+    this.isLoading = new BehaviorSubject(false);
+    this.isError = new BehaviorSubject(false);
 
     this.send = (params: P) => {
-      if (this.getValue().isLoading) {
+      if (this.isLoading.getValue()) {
         this.cancel.next();
       }
       return of(params).pipe(
         tap(() => {
+          this.isLoading.next(true);
+          this.isSuccess.next(false);
+          this.isError.next(false);
           console.log(`${request.name} request`);
-          this.loading();
         }),
         switchMap(request),
         tap((response) => {
+          this.next(response);
+          this.isLoading.next(false);
+          this.isSuccess.next(true);
+          this.isError.next(false);
           console.log(`${request.name} success`);
-          this.success(response);
         }),
         catchError((error) => {
-          this.error(error);
+          this.isLoading.next(false);
+          this.isSuccess.next(false);
+          this.isError.next(true);
           console.error(error);
           return of(error);
         }),
         takeUntil(this.cancel)
       );
     };
-  }
-
-  success(data: T) {
-    this.next({
-      ...this.getValue(),
-      data,
-      error: undefined,
-      status: "success",
-      isSuccess: true,
-      isError: false,
-      isLoading: false,
-    });
-  }
-
-  error(error?: any) {
-    this.next({
-      ...this.getValue(),
-      error,
-      status: "error",
-      isSuccess: false,
-      isError: true,
-      isLoading: false,
-    });
-  }
-
-  loading() {
-    this.next({
-      ...this.getValue(),
-      error: undefined,
-      status: "loading",
-      isSuccess: false,
-      isError: false,
-      isLoading: true,
-    });
   }
 }

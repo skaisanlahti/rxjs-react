@@ -1,11 +1,12 @@
-import { useStateSubject } from "../../shared/hooks/observable-hooks";
+import { useStream } from "../../shared/hooks/observable-hooks";
+import { loadFromStorage } from "../../shared/utils/storage-utils";
 import { useApp } from "../AppContext";
-import { Route } from "../router/RouterCore";
+import { Route } from "../router/RouterFeature";
 import { NavItem, TopBar } from "./HeaderStyles";
 
 export default function Header() {
-  const app = useApp();
-  const route = useStateSubject(app.router.route);
+  const { router } = useApp();
+  const route = useStream(router.route, loadFromStorage("route") ?? Route.Home);
 
   return (
     <TopBar>
@@ -13,7 +14,7 @@ export default function Header() {
         selected={route === Route.Home}
         disabled={route === Route.Home}
         onClick={() => {
-          app.router.changeRoute.next(Route.Home);
+          router.goTo(Route.Home);
         }}
       >
         Home
@@ -22,7 +23,7 @@ export default function Header() {
         selected={route === Route.Todos}
         disabled={route === Route.Todos}
         onClick={() => {
-          app.router.changeRoute.next(Route.Todos);
+          router.goTo(Route.Todos);
         }}
       >
         Todos
@@ -31,7 +32,7 @@ export default function Header() {
         selected={route === Route.Counter}
         disabled={route === Route.Counter}
         onClick={() => {
-          app.router.changeRoute.next(Route.Counter);
+          router.goTo(Route.Counter);
         }}
       >
         Counter

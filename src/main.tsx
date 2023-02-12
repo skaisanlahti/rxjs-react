@@ -3,11 +3,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app/App";
 import { AppProvider } from "./app/AppContext";
-import AppModule from "./app/AppModule";
+import { buildApplication } from "./app/AppModule";
 import { theme } from "./app/AppStyles";
 import "./shared/reset.css";
 
-const app = AppModule();
+const app = buildApplication();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

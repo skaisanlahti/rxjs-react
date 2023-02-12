@@ -1,23 +1,23 @@
 import { useApp } from "../AppContext";
 import { Button, Container, Title } from "../AppStyles";
-import { Route } from "../router/RouterCore";
+import { Route } from "../router/RouterFeature";
 
 export default function Home() {
-  const app = useApp();
+  const { router } = useApp();
   return (
     <Container>
       <Title>Home</Title>
       <div>
         <Button
           onClick={() => {
-            app.router.changeRoute.next(Route.Todos);
+            router.goTo(Route.Todos);
           }}
         >
           Todos
         </Button>
         <Button
           onClick={() => {
-            app.router.changeRoute.next(Route.Counter);
+            router.goTo(Route.Counter);
           }}
         >
           Counter

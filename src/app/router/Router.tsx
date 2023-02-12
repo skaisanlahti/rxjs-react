@@ -1,12 +1,11 @@
-import { useStateSubject } from "../../shared/hooks/observable-hooks";
+import { useStream } from "../../shared/hooks/observable-hooks";
 import { useApp } from "../AppContext";
-import { routes } from "./RouterCore";
+import { Route, routes } from "./RouterFeature";
 import { NotFound } from "./views/NotFound";
 
-interface Props {}
-export default function Router({}: Props = {}) {
-  const app = useApp();
-  const route = useStateSubject(app.router.route);
+export default function Router() {
+  const { router } = useApp();
+  const route = useStream(router.route, Route.Home);
 
   const View = routes.get(route);
   if (!View) return <NotFound />;

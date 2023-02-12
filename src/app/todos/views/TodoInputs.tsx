@@ -1,33 +1,33 @@
-import { useSubscribe } from "../../../shared/hooks/observable-hooks";
+import { useStream } from "../../../shared/hooks/observable-hooks";
 import { useApp } from "../../AppContext";
 import { Input } from "../../AppStyles";
-import { HiddenField } from "../hidden-field/HiddenField";
 
 export function TodoInputs() {
-  const app = useApp();
-  const title = useSubscribe(app.todos.title);
-  const description = useSubscribe(app.todos.description);
-  const isDelayFieldHidden = useSubscribe(app.hidden.isDelayFieldHidden);
+  const { todos } = useApp();
+  const title = useStream(todos.title, "");
+  const description = useStream(todos.description, "");
+
+  function handleTitle(e: React.ChangeEvent<HTMLInputElement>) {
+    todos.setTitle(e.target.value);
+  }
+
+  function handleDescription(e: React.ChangeEvent<HTMLInputElement>) {
+    todos.setDescription(e.target.value);
+  }
 
   return (
     <>
-      <HiddenField />
       <Input
-        onFocus={() => app.todos.isTodoFieldFocused.next(true)}
-        onBlur={() => app.todos.isTodoFieldFocused.next(false)}
-        autoFocus={isDelayFieldHidden}
         type="text"
         value={title}
         placeholder="Title"
-        onChange={(e) => app.todos.title.next(e.target.value)}
+        onChange={handleTitle}
       />
       <Input
-        onFocus={() => app.todos.isTodoFieldFocused.next(true)}
-        onBlur={() => app.todos.isTodoFieldFocused.next(false)}
         type="text"
         value={description}
         placeholder="Description"
-        onChange={(e) => app.todos.description.next(e.target.value)}
+        onChange={handleDescription}
       />
     </>
   );

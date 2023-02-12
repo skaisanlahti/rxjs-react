@@ -4,19 +4,19 @@
       "id": "1",
       "title": "Shopping",
       "description": "Buy some potatos",
-      "done": false
+      "isDone": false
     },
     {
       "id": "2",
       "title": "Studying",
       "description": "Study some potatos",
-      "done": false
+      "isDone": false
     },
     {
       "id": "3",
       "title": "Work",
       "description": "Make some potatos",
-      "done": false
+      "isDone": false
     }
   ]
 }

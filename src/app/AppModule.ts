@@ -1,40 +1,33 @@
-import { createGroupStarter } from "../shared/utils/createGroupStarter";
-import CountTodosHandler from "./count-todos/CountTodosHandler";
-import CounterHandler from "./counter/CounterHandler";
-import CounterModule from "./counter/CounterModule";
-import RouterHandler from "./router/RouterHandler";
-import RouterModule from "./router/RouterModule";
-import TodoHandler from "./todos/TodosHandler";
-import TodoModule from "./todos/TodosModule";
+import { buildMainHandler } from "./MainHandler";
+import { buildCounter } from "./counter/CounterFeature";
+import { buildRouter } from "./router/RouterFeature";
+import { buildTodos } from "./todos/TodosFeature";
 import ApiModule from "./todos/api-mock/ApiModule";
-import HiddenFieldHandler from "./todos/hidden-field/HiddenFieldHandler";
-import HiddenFieldModule from "./todos/hidden-field/HiddenFieldModule";
 
-export type Application = ReturnType<typeof AppModule>;
-
-export default function AppModule() {
+export function buildApplication() {
+  // data access
   const api = ApiModule();
-  const router = RouterModule();
-  const counter = CounterModule();
-  const todos = TodoModule({ api });
-  const hidden = HiddenFieldModule();
 
-  const startHiddenFieldEvents = HiddenFieldHandler({ hidden, todos, api });
+  // application layer
+  const { counterFacade, counterHandler } = buildCounter();
+  const { routerFacade, routerHandler, routerStreams } = buildRouter();
+  const { todosFacade, todosHandler } = buildTodos();
 
-  const start = createGroupStarter([
-    RouterHandler({ router }),
-    CounterHandler({ counter }),
-    TodoHandler({ todos }),
-    CountTodosHandler({ counter, todos }),
-  ]);
+  // application logic runner
+  buildMainHandler(
+    routerStreams.route, // main handler uses current route as switch for activating handlers
+    routerHandler,
+    todosHandler,
+    counterHandler
+  ).subscribe();
 
+  // component facade for UI consumption
   return {
-    start,
-    router,
-    counter,
-    todos,
-    hidden,
+    router: routerFacade,
+    counter: counterFacade,
+    todos: todosFacade,
     api,
-    startHiddenFieldEvents,
   };
 }
+
+export type Application = ReturnType<typeof buildApplication>;
