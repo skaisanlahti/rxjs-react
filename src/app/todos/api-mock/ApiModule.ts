@@ -7,7 +7,7 @@ export type ApiModuleType = ReturnType<typeof ApiModule>;
 
 export default function ApiModule() {
   let todos = todosJson.todos as Todos;
-  const mockDelay = new BehaviorSubject(500);
+  const mockDelay = new BehaviorSubject(2000);
   const updateDelay = new Subject<number>();
 
   loadFromStorageToState("delay", mockDelay);

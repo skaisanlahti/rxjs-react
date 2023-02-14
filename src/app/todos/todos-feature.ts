@@ -70,8 +70,6 @@ export function buildTodoStreams() {
     todos: new BehaviorSubject<Todos>(initialTodos),
     title: new BehaviorSubject(""),
     description: new BehaviorSubject(""),
-    updateTitle: new Subject<string>(),
-    updateDescription: new Subject<string>(),
     addTodo: new Subject<void>(),
     removeTodo: new Subject<ID>(),
     checkTodo: new Subject<ID>(),

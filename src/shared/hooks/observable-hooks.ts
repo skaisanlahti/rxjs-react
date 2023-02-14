@@ -124,6 +124,6 @@ export function select<T, K>(
 }
 
 // library hook name too long so renaming
-export function useStream<T>(stream: Observable<T>, init: T) {
+export function useStream<T>(stream: Observable<T>, init?: T) {
   return useLayoutObservableState(stream, init);
 }
