@@ -1,13 +1,7 @@
-import {
-  BehaviorSubject,
-  Subject,
-  map,
-  merge,
-  tap,
-  withLatestFrom,
-} from "rxjs";
+import { map, merge, tap, withLatestFrom } from "rxjs";
 import todosJson from "../../shared/todos.json";
 import genId from "../../shared/utils/genId";
+import { Event, State } from "../../shared/utils/renaming";
 
 //#region Pure
 
@@ -53,7 +47,7 @@ function check(todos: Todos, id: string): Todos {
   });
 }
 
-export const todosLibrary = {
+export const todoOperations = {
   create,
   toggle,
   add,
@@ -67,66 +61,57 @@ export const todosLibrary = {
 
 export function buildTodoStreams() {
   return {
-    todos: new BehaviorSubject<Todos>(initialTodos),
-    title: new BehaviorSubject(""),
-    description: new BehaviorSubject(""),
-    addTodo: new Subject<void>(),
-    removeTodo: new Subject<ID>(),
-    checkTodo: new Subject<ID>(),
-    resetTodos: new Subject<void>(),
+    todos: new State<Todos>(initialTodos),
+    title: new State(""),
+    description: new State(""),
+    addTodo: new Event<void>(),
+    removeTodo: new Event<ID>(),
+    checkTodo: new Event<ID>(),
+    resetTodos: new Event<void>(),
   };
 }
 
 export type TodoStreams = ReturnType<typeof buildTodoStreams>;
 
 function buildAddTodoHandler(
-  addTodo: Subject<void>,
-  todos: BehaviorSubject<Todos>,
-  title: BehaviorSubject<string>,
-  description: BehaviorSubject<string>
+  addTodo: Event<void>,
+  todos: State<Todos>,
+  title: State<string>,
+  description: State<string>
 ) {
   return addTodo.pipe(
     tap(() => console.log("add todo")),
     withLatestFrom(title, description),
     map(([, currentTitle, currentDescription]) =>
-      todosLibrary.create(currentTitle, currentDescription)
+      todoOperations.create(currentTitle, currentDescription)
     ),
     withLatestFrom(todos),
-    map(([newTodo, currentTodos]) => todosLibrary.add(currentTodos, newTodo)),
+    map(([newTodo, currentTodos]) => todoOperations.add(currentTodos, newTodo)),
     tap((newTodos) => todos.next(newTodos)),
     tap(() => title.next("")),
     tap(() => description.next(""))
   );
 }
 
-function buildRemoveTodoHandler(
-  removeTodo: Subject<ID>,
-  todos: BehaviorSubject<Todos>
-) {
+function buildRemoveTodoHandler(removeTodo: Event<ID>, todos: State<Todos>) {
   return removeTodo.pipe(
     tap(() => console.log("remove todo")),
     withLatestFrom(todos),
-    map(([id, currentTodos]) => todosLibrary.remove(currentTodos, id)),
+    map(([id, currentTodos]) => todoOperations.remove(currentTodos, id)),
     tap((newTodos) => todos.next(newTodos))
   );
 }
 
-function buildCheckTodoHandler(
-  checkTodo: Subject<ID>,
-  todos: BehaviorSubject<Todos>
-) {
+function buildCheckTodoHandler(checkTodo: Event<ID>, todos: State<Todos>) {
   return checkTodo.pipe(
     tap(() => console.log("check todo")),
     withLatestFrom(todos),
-    map(([id, currentTodos]) => todosLibrary.check(currentTodos, id)),
+    map(([id, currentTodos]) => todoOperations.check(currentTodos, id)),
     tap((newTodos) => todos.next(newTodos))
   );
 }
 
-function buildResetTodosHandler(
-  resetTodos: Subject<void>,
-  todos: BehaviorSubject<Todos>
-) {
+function buildResetTodosHandler(resetTodos: Event<void>, todos: State<Todos>) {
   return resetTodos.pipe(
     tap(() => console.log("reset todos")),
     tap(() => todos.next(initialTodos))
@@ -189,5 +174,48 @@ export function buildTodos() {
     todoStreams,
     todosFacade: buildTodosFacade(todoStreams),
     todosHandler: buildTodosHandler(todoStreams),
+  };
+}
+
+// single module
+export function TodosModule() {
+  const todos = new State<Todos>([]);
+  const title = new State("");
+  const description = new State("");
+
+  return {
+    title: title.asObservable(),
+    description: description.asObservable(),
+    setTitle(value: string) {
+      title.next(value);
+    },
+    setDescription(value: string) {
+      description.next(value);
+    },
+    items: todos.asObservable(),
+    add() {
+      const current = todos.getValue();
+      const newTodo = todoOperations.create(
+        title.getValue(),
+        description.getValue()
+      );
+      const newTodos = todoOperations.add(current, newTodo);
+      todos.next(newTodos);
+      title.next("");
+      description.next("");
+    },
+    remove(id: ID) {
+      const current = todos.getValue();
+      const newTodos = todoOperations.remove(current, id);
+      todos.next(newTodos);
+    },
+    check(id: ID) {
+      const current = todos.getValue();
+      const newTodos = todoOperations.check(current, id);
+      todos.next(newTodos);
+    },
+    reset() {
+      todos.next(initialTodos);
+    },
   };
 }

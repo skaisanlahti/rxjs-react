@@ -28,6 +28,15 @@ export default function Header() {
         Todos
       </NavItem>
       <NavItem
+        selected={route === Route.Remote}
+        disabled={route === Route.Remote}
+        onClick={() => {
+          router.goTo(Route.Remote);
+        }}
+      >
+        Remote Todos
+      </NavItem>
+      <NavItem
         selected={route === Route.Counter}
         disabled={route === Route.Counter}
         onClick={() => {

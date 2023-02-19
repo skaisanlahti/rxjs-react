@@ -1,8 +1,7 @@
-import { useLayoutObservableState } from "observable-hooks";
+export { useLayoutObservableState as useStream } from "observable-hooks";
 import { useLayoutEffect, useState, useSyncExternalStore } from "react";
 import {
   BehaviorSubject,
-  Observable,
   Subscription,
   distinctUntilChanged,
   map,
@@ -121,9 +120,4 @@ export function select<T, K>(
     innerSubject.complete();
   };
   return [innerSubject, innerSubscription, cleanUp] as const;
-}
-
-// library hook name too long so renaming
-export function useStream<T>(stream: Observable<T>, init?: T) {
-  return useLayoutObservableState(stream, init);
 }

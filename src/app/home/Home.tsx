@@ -17,6 +17,13 @@ export default function Home() {
         </Button>
         <Button
           onClick={() => {
+            router.goTo(Route.Remote);
+          }}
+        >
+          Remote Todos
+        </Button>
+        <Button
+          onClick={() => {
             router.goTo(Route.Counter);
           }}
         >

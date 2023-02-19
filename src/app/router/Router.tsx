@@ -6,7 +6,6 @@ import { NotFound } from "./views/NotFound";
 export default function Router() {
   const { router } = useApp();
   const route = useStream(router.route, getInitialRoute());
-
   const View = routes.get(route);
   if (!View) return <NotFound />;
   return <View />;

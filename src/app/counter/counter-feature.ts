@@ -1,19 +1,7 @@
-import {
-  BehaviorSubject,
-  Subject,
-  map,
-  merge,
-  tap,
-  withLatestFrom,
-} from "rxjs";
-import genId from "../../shared/utils/genId";
-import {
-  loadFromStorage,
-  saveToStorage,
-} from "../../shared/utils/storage-utils";
+import { map } from "rxjs";
+import { State } from "../../shared/utils/renaming";
+import { RemoteTodos } from "../todos/remote-todos";
 import { ID } from "../todos/todos-feature";
-
-//#region Pure
 
 export interface Count {
   id?: ID;
@@ -40,95 +28,30 @@ function setCount(count: Count, input: number): Count {
   return newCount;
 }
 
-export const counterLibrary = {
+export const counterOperations = {
   increment,
   decrement,
   setCount,
 };
 
-//#endregion Pure
+export function CounterModule(remoteTodos: RemoteTodos) {
+  const count = new State(0);
 
-//#region Streams
+  remoteTodos.itemCount.subscribe((value) => count.next(value));
 
-export function buildCounterStreams() {
   return {
-    count: new BehaviorSubject<Count>(
-      loadFromStorage("count") ?? { id: genId(), value: 0 }
-    ),
-    increment: new Subject<number | void>(),
-    decrement: new Subject<number | void>(),
-    reset: new Subject<void>(),
-    loadCount: new Subject<void>(),
-    saveCount: new Subject<Count>(),
+    count: count.asObservable(),
+    double: count.pipe(map((value) => value * 2)),
+    increment(amount: number) {
+      count.next(count.getValue() + amount);
+    },
+    decrement(amount: number) {
+      count.next(count.getValue() - amount);
+    },
+    reset() {
+      count.next(0);
+    },
   };
 }
 
-export type CounterStreams = ReturnType<typeof buildCounterStreams>;
-
-export function buildCounterHandler(counter: CounterStreams) {
-  const { log } = console;
-
-  const countAfterIncrement = counter.increment.pipe(
-    tap(() => log("increment count")),
-    withLatestFrom(counter.count),
-    map(([input, count]) => increment(count, input))
-  );
-  const countAfterDecrement = counter.decrement.pipe(
-    tap(() => log("decrement count")),
-    withLatestFrom(counter.count),
-    map(([input, count]) => decrement(count, input))
-  );
-  const countAfterReset = counter.reset.pipe(
-    tap(() => log("reset count")),
-    withLatestFrom(counter.count),
-    map(([_, count]) => setCount(count, 3))
-  );
-
-  const updateStateAndStorage = merge(
-    countAfterIncrement,
-    countAfterDecrement,
-    countAfterReset
-  ).pipe(
-    tap((count) => counter.count.next(count)),
-    tap((count) => counter.saveCount.next(count))
-  );
-
-  const handleSaveEvent = counter.saveCount.pipe(
-    map((count) => saveToStorage("count", count))
-  );
-
-  const handleLoadEvent = counter.loadCount.pipe(
-    map(() => loadFromStorage<Count>("count")),
-    tap((count) => {
-      if (count !== null) counter.count.next(count);
-    })
-  );
-
-  return merge(updateStateAndStorage, handleLoadEvent, handleSaveEvent);
-}
-
-export type CounterHandler = ReturnType<typeof buildCounterHandler>;
-
-//#endregion Streams
-
-//#region Facade
-
-export function buildCounterFacade(streams: CounterStreams) {
-  return {
-    count: streams.count.pipe(map((c) => c.value)),
-    double: streams.count.pipe(map((c) => c.value * 2)),
-    inc: () => streams.increment.next(),
-    dec: () => streams.decrement.next(),
-  };
-}
-
-//#endregion Facade
-
-export function buildCounter() {
-  const counterStreams = buildCounterStreams();
-  return {
-    counterStreams,
-    counterFacade: buildCounterFacade(counterStreams),
-    counterHandler: buildCounterHandler(counterStreams),
-  };
-}
+export type Counter = ReturnType<typeof CounterModule>;

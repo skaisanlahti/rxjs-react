@@ -8,11 +8,11 @@ export default function Counter() {
   const double = useStream(counter.double, 0);
 
   function handleIncrement() {
-    counter.inc();
+    counter.increment(1);
   }
 
   function handleDecrement() {
-    counter.dec();
+    counter.decrement(1);
   }
 
   return (
